@@ -2,8 +2,8 @@
     session_start();
     session_unset();
     session_destroy();
-    require_once('../../includes/connect.php');
     require_once('../../includes/methods.php');
+    require_once('../../includes/connect.php');
     $time = time();
     if(isset($_COOKIE['user_id']) && isset($_COOKIE['rem']) && isset($_COOKIE['remcode']))
     {

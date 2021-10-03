@@ -1,10 +1,13 @@
-<?php require_once("../../includes/required.php"); ?>
+<?php
+    require_once("../../includes/required.php");
+    $page = "Dashboard";
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title><?php echo $sitename; ?> :: Dashboard</title>
+        <title><?php echo $sitename." :: ".$page; ?></title>
         <?php include_once("../../includes/css.php"); ?>
     </head>
     <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -28,12 +31,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0">Dashboard</h1>
+                                <h1 class="m-0"><?php echo $page; ?></h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Dashboard</li>
+                                    <li class="breadcrumb-item active"><?php echo $page; ?></li>
                                 </ol>
                             </div><!-- /.col -->
                         </div><!-- /.row -->

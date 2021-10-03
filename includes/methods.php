@@ -15,6 +15,28 @@
         $sql = "INSERT INTO $table ($fields) VALUES ($values)";
         return mysqli_query($conn, $sql);
     }
+    function delete($table, $condi, $custom)
+    {
+        global $conn;
+        if($custom == '')
+        {
+            $where = json_decode($condi);
+            $condition = '';
+            foreach($where as $key => $value)
+            {
+                $condition .= "$key='$value' AND ";
+            }
+            $condition = substr($condition, 0, -5);
+            $sql = "DELETE FROM $table WHERE $condition";
+            return mysqli_query($conn, $sql);
+        }
+        else
+        {
+            $condition = $custom;
+            $sql = "DELETE FROM $table WHERE $condition,";
+            return mysqli_query($conn, $sql);
+        }
+    }
     function update($table, $set, $condi, $custom)
     {
         global $conn;

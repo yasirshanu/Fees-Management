@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2021 at 11:30 PM
+-- Generation Time: Oct 03, 2021 at 07:44 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.9
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `securelogin`
+-- Database: `fees`
 --
 
 -- --------------------------------------------------------
@@ -29,20 +29,23 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `confidential` (
   `user_id` int(11) NOT NULL,
+  `usertype` int(11) DEFAULT NULL,
   `fname` varchar(20) NOT NULL,
   `mname` varchar(20) DEFAULT NULL,
   `lname` varchar(20) NOT NULL,
   `username` varchar(30) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL
+  `password` varchar(100) NOT NULL,
+  `added_by` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `confidential`
 --
 
-INSERT INTO `confidential` (`user_id`, `fname`, `mname`, `lname`, `username`, `email`, `password`) VALUES
-(1, 'Yasir', NULL, 'Ansari', 'yasirshanu', 'yasirshanu@gmail.com', '$2y$10$MUav9pHYQ8LG1krUO0DWBOTa7bZ7vs1KR01WFOgXTuvH/zsPXjjVu');
+INSERT INTO `confidential` (`user_id`, `usertype`, `fname`, `mname`, `lname`, `username`, `email`, `password`, `added_by`, `time`) VALUES
+(1, 1, 'Yasir', '', 'Ansari', 'yasirshanu', 'yasirshanu@gmail.com', '$2y$10$NZ2T0fz5SG01noUX6eJhguzV4iVJTOxov2jfdteSAe.liNrUXiE7q', 1, 1633209141);
 
 -- --------------------------------------------------------
 
@@ -82,8 +85,28 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `setting_name`, `setting_value`) VALUES
-(1, 'sitetitle', '<b>Secure</b> Login'),
-(2, 'sitename', 'Secure Login');
+(1, 'sitetitle', '<b>MAT</b> College'),
+(2, 'sitename', 'MAT College');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `usertype`
+--
+
+CREATE TABLE `usertype` (
+  `usertype_id` int(11) NOT NULL,
+  `usertype_name` varchar(25) NOT NULL,
+  `created_by` int(11) NOT NULL,
+  `time` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `usertype`
+--
+
+INSERT INTO `usertype` (`usertype_id`, `usertype_name`, `created_by`, `time`) VALUES
+(1, 'Super Admin', 1, 1633209141);
 
 --
 -- Indexes for dumped tables
@@ -108,6 +131,12 @@ ALTER TABLE `settings`
   ADD PRIMARY KEY (`setting_id`);
 
 --
+-- Indexes for table `usertype`
+--
+ALTER TABLE `usertype`
+  ADD PRIMARY KEY (`usertype_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -128,6 +157,12 @@ ALTER TABLE `loginrecord`
 --
 ALTER TABLE `settings`
   MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `usertype`
+--
+ALTER TABLE `usertype`
+  MODIFY `usertype_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
