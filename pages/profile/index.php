@@ -66,6 +66,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php echo $sitename." :: ".$page; ?></title>
         <?php include_once("../../includes/css.php"); ?>
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <!-- Toastr -->
+        <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
     </head>
     <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
         <div class="wrapper">
@@ -308,6 +312,11 @@
         </div>
         <!-- ./wrapper -->
         <?php include_once("../../includes/scripts.php"); ?>
+        <!-- SweetAlert2 -->
+        <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+        <!-- Toastr -->
+        <script src="../../plugins/toastr/toastr.min.js"></script>
+
         <script>
             document.getElementById("passchange").addEventListener("click", passChange);
             function passChange(){

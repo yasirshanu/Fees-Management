@@ -9,6 +9,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php echo $sitename." :: ".$page; ?></title>
         <?php include_once("../../includes/css.php"); ?>
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="../../plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <!-- Toastr -->
+        <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+        <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     </head>
     <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" onload="showcontent()">
         <div class="wrapper">
@@ -76,7 +84,7 @@
                                     <div class="card-header">
                                         <h3 class="card-title">All User Type</h3>
                                     </div>
-                                    <div id="cardbody" class="card-body"></div>
+                                    <div id="cardbody" class="card-body" style="overflow: auto;"></div>
                                     <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
                                 </div>
                             </div>
@@ -93,6 +101,23 @@
         </div>
         <!-- ./wrapper -->
         <?php include_once("../../includes/scripts.php"); ?>
+        <!-- SweetAlert2 -->
+        <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+        <!-- Toastr -->
+        <script src="../../plugins/toastr/toastr.min.js"></script>
+        <!-- DataTables  & Plugins -->
+        <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="../../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="../../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="../../plugins/jszip/jszip.min.js"></script>
+        <script src="../../plugins/pdfmake/pdfmake.min.js"></script>
+        <script src="../../plugins/pdfmake/vfs_fonts.js"></script>
+        <script src="../../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="../../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
         
         <script>
             document.getElementById("clear").addEventListener("click", clearut);

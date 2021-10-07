@@ -6,6 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title><?php echo $sitename; ?> :: Login</title>
         <?php include_once("../../includes/css.php"); ?>
+        <!-- icheck bootstrap -->
+        <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     </head>
     <body class="hold-transition login-page">
         <div class="login-box">
