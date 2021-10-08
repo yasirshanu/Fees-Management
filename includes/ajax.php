@@ -64,7 +64,7 @@
             {
                 echo 2;
             }
-            else if(getrows('usertype', json_encode(['usertype_name' => $ut]), '') > 0)
+            else if(($ut != getvalue('usertype_name', 'usertype', json_encode(['usertype_id' => $utid]), '')) && (getrows('usertype', json_encode(['usertype_name' => $ut]), '') > 0))
             {
                 echo 3;
             }
@@ -163,7 +163,10 @@
                                         ?>
                                     </td>
                                     <td><?php echo date("d-m-Y h:i:s A", $row['time']); ?></td>
-                                    <td><i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['usertype_id']; ?>', '<?php echo $row['usertype_name']; ?>')"></i> <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?></td>
+                                    <td>
+                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['usertype_id']; ?>', '<?php echo $row['usertype_name']; ?>')"></i> 
+                                        <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -503,7 +506,10 @@
                                         ?>
                                     </td>
                                     <td><?php echo date("d-m-Y h:i:s A", $row['time']); ?></td>
-                                    <td><i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="updateuser('<?php echo $row['user_id']; ?>', '<?php echo $row['fname']; ?>', '<?php echo $row['mname']; ?>', '<?php echo $row['lname']; ?>', '<?php echo $row['usertype']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['email']; ?>')"></i> <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="deluser('<?php echo $row['user_id']; ?>')"></i></td>
+                                    <td>
+                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="updateuser('<?php echo $row['user_id']; ?>', '<?php echo $row['fname']; ?>', '<?php echo $row['mname']; ?>', '<?php echo $row['lname']; ?>', '<?php echo $row['usertype']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['email']; ?>')"></i> 
+                                        <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="deluser('<?php echo $row['user_id']; ?>')"></i>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;
@@ -546,6 +552,151 @@
             {
                 echo 2;
             }
+        }
+        else if($_POST['request'] == 'updateCourse')
+        {
+            $cid = $_POST['cid'];
+            $course = $_POST['course'];
+            $cfee = $_POST['cfee'];
+            $cremark = $_POST['cremark'];
+            if(getrows('course', json_encode(['course_id' => $cid]), '') == 0)
+            {
+                echo 0;
+            }
+            else if($course == '')
+            {
+                echo 1;
+            }
+            else if(strlen($course) > 50)
+            {
+                echo 2;
+            }
+            else if(($course != getvalue('course_name', 'course', json_encode(['course_id' => $cid]), '')) && (getrows('course', json_encode(['course_name' => $course]), '') > 0))
+            {
+                echo 3;
+            }
+            else if($cfee == '')
+            {
+                echo 4;
+            }
+            else if($cfee > 9999999)
+            {
+                echo 5;
+            }
+            else
+            {
+                if(update("course", "course_name='$course', course_fee='$cfee', course_remark='$cremark'", json_encode(['course_id' => $cid]), ''))
+                {
+                    echo 6;
+                }
+                else
+                {
+                    echo 7;
+                }
+            }
+        }
+        else if($_POST['request'] == 'addCourse')
+        {
+            $cname = $_POST['cname'];
+            $cfee = $_POST['cfee'];
+            $cremark = $_POST['cremark'];
+            if($cname == '')
+            {
+                echo 0;
+            }
+            else if(strlen($cname) > 50)
+            {
+                echo 1;
+            }
+            else if(getrows('course', json_encode(['course_name' => $cname]), '') > 0)
+            {
+                echo 2;
+            }
+            else if($cfee == '')
+            {
+                echo 3;
+            }
+            else if($cfee > 9999999)
+            {
+                echo 4;
+            }
+            else
+            {
+                $time = time();
+                $added_by = $_SESSION['user_id'];
+                if(insert('course', json_encode(['course_name' => $cname, 'course_fee'=> $cfee, 'course_remark' => $cremark, 'added_by' => $added_by, 'added_time' => $time])))
+                {
+                    echo 5;
+                }
+                else
+                {
+                    echo 6;
+                }
+            }
+        }
+        else if($_POST['request'] == 'showCourses')
+        {
+            ?>
+            <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course Name</th>
+                        <th>Course Fee</th>
+                        <th>Remark</th>
+                        <th>Added By</th>
+                        <th>Added Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $i = 1;
+                        $rows = getrows('course', '', 'course_id > 0');
+                        $result = getresult('*', 'course', '', 'course_id > 0', 'added_time', '', '');
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            ?>
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $row['course_name']; ?></td>
+                                <td>₹ <?php echo $row['course_fee']; ?></td>
+                                <td><?php echo $row['course_remark']; ?></td>
+                                <td>
+                                    <?php
+                                        $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        $middle = getvalue('mname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        echo $first." ".$middle." ".$last;
+                                    ?>
+                                </td>
+                                <td><?php echo date("d-m-Y h:i:s A", $row['added_time']); ?></td>
+                                <td>
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
+                                    <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
+                                </td>
+                            </tr>
+                            <?php
+                            $i++;
+                        }
+                    ?>
+                </tbody>
+            </table>
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": true,
+                        "ordering": false,
+                        "info": false,
+                        "autoWidth": true,
+                        "responsive": true,
+                        "buttons": ["pdf", "print"]
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
         }
     }
 ?>
