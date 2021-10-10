@@ -603,6 +603,25 @@
                 }
             }
         }
+        else if($_POST['request'] == 'delCourse')
+        {
+            $cid = $_POST['cid'];
+            if(getrows('course', json_encode(['course_id' => $cid]), '') == 0)
+            {
+                echo 0;
+            }
+            else
+            {
+                if(delete('course', json_encode(['course_id' => $cid]), ''))
+                {
+                    echo 1;
+                }
+                else
+                {
+                    echo 2;
+                }
+            }
+        }
         else if($_POST['request'] == 'addCourse')
         {
             $cname = $_POST['cname'];
@@ -716,7 +735,7 @@
                                 <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
                                 <td>
                                     <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $cp; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
-                                    <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
+                                    <?php if(getrows('student', json_encode(['course' => $row['course_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="del('<?php echo $row['course_id'] ?>')"></i><?php } ?>
                                 </td>
                             </tr>
                             <?php

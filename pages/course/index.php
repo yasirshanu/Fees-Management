@@ -203,6 +203,42 @@
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'block');
             }
+            function del(cid){
+                $('#userOverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'cid': cid, 'request': 'delCourse' },
+                    success: function(res){
+                        if(res == 0)
+                        {
+                            Swal.fire('Error!', 'Invalid Course!', 'error');
+                            $('#userOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else if(res == 1)
+                        {
+                            Swal.fire('Success!', 'Course deleted successfully...', 'success');
+                            showcontent();
+                            $('#userOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else if(res == 2)
+                        {
+                            Swal.fire('Error!', 'Something went wrong!', 'error');
+                            $('#userOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else
+                        {
+                            Swal.fire('Error!', 'Something went wrong!', 'error');
+                            $('#userOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
             function setupdate(course_id, course_name, course_fee, cp, course_remark)
             {
                 $('#courseau').html('Update Course');
