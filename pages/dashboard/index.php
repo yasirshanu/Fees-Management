@@ -50,15 +50,28 @@
                         <div class="row">
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
-                                <div class="small-box bg-info">
+                                <div class="small-box bg-warning">
                                     <div class="inner">
-                                        <h3><?php echo getrows('usertype', '', 'usertype_id > 1'); ?></h3>
-                                        <p>User Types</p>
+                                        <h3><?php echo getrows('course', '', 'course_id > 0'); ?></h3>
+                                        <p>Available Courses</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-id-card"></i>
+                                        <i class="fas fa-graduation-cap"></i>
                                     </div>
-                                    <a href="../user-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                    <a href="../course" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h3><?php echo getrows('student', '', 'student_id > 0'); ?></h3>
+                                        <p>Enrolled Students</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <a href="../student" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-6">
@@ -72,6 +85,19 @@
                                         <i class="ion ion-person-add"></i>
                                     </div>
                                     <a href="../user" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h3><?php echo getrows('usertype', '', 'usertype_id > 1'); ?></h3>
+                                        <p>User Types</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-id-card"></i>
+                                    </div>
+                                    <a href="../user-management" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                         </div>
