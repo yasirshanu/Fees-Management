@@ -801,17 +801,25 @@
             {
                 echo 7;
             }
+            else if(($enroll != getvalue('enroll', 'student', json_encode(['student_id' => $sid]), '')) && ($enroll != '') && (getrows('student', json_encode(['enroll' => $enroll]), '') > 0))
+            {
+                echo 8;
+            }
+            else if(($roll != getvalue('roll', 'student', json_encode(['student_id' => $sid]), '')) && ($roll != '') && (getrows('student', json_encode(['roll' => $roll]), '') > 0))
+            {
+                echo 9;
+            }
             else
             {
                 
                 $cdob = strtotime($dob);
                 if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', enroll='$enroll', roll='$roll'", json_encode(['student_id' => $sid]), ''))
                 {
-                    echo 8;
+                    echo 10;
                 }
                 else
                 {
-                    echo 9;
+                    echo 11;
                 }
             }
         }
@@ -860,6 +868,14 @@
             {
                 echo 8;
             }
+            else if(($enroll != '') && (getrows('student', json_encode(['enroll' => $enroll]), '') > 0))
+            {
+                echo 9;
+            }
+            else if(($roll != '') && (getrows('student', json_encode(['roll' => $roll]), '') > 0))
+            {
+                echo 10;
+            }
             else
             {
                 $cdob = strtotime($dob);
@@ -870,11 +886,11 @@
                 $added_by = $_SESSION['user_id'];
                 if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'added_by' => $added_by, 'added_time' => $time])))
                 {
-                    echo 9;
+                    echo 11;
                 }
                 else
                 {
-                    echo 10;
+                    echo 12;
                 }
             }
         }

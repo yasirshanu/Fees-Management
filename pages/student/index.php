@@ -355,11 +355,23 @@
                                 else if(res == 8)
                                 {
                                     $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
+                                }
+                                else if(res == 9)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'This Roll number already exist!', 'error');
+                                }
+                                else if(res == 10)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
                                     clearu();
                                     showcontent();
                                     Swal.fire('success!', 'User updated successfully!', 'success');
                                 }
-                                else if(res == 9)
+                                else if(res == 11)
                                 {
                                     $('#studentOverlay').css('display', 'none');
                                     $('#overlay').css('display', 'none');
@@ -515,12 +527,24 @@
                             }
                             else if(res == 9)
                             {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
+                            }
+                            else if(res == 10)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'This Roll number already exist!', 'error');
+                            }
+                            else if(res == 11)
+                            {
                                 showcontent();
                                 clearu();
                                 $('#studentOverlay').css('display', 'none');
                                 Swal.fire('Success!', 'Student enrolled successfully!', 'success');
                             }
-                            else if(res == 10)
+                            else if(res == 12)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
