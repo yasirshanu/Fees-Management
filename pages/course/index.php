@@ -17,6 +17,9 @@
         <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
         <link rel="stylesheet" href="../../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     </head>
     <body class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" onload="showcontent()">
         <div class="wrapper">
@@ -73,7 +76,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cfee">Course Fee <span class="text-danger">*</span></label>
+                                                    <label for="cfee">Total Fees <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
@@ -84,21 +87,40 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label>Remark</label>
+                                                    <label for="cp">Course Period <span class="text-danger">*</span></label>
+                                                    <select id="cp" class="form-control select2bs4" style="width: 100%;">
+                                                        <option selected="selected" value="" disabled>--Select System--</option>
+                                                        <option value="1_1">1 Semester</option>
+                                                        <option value="0_1">1 Year</option>
+                                                        <option value="1_2">2 Semesters</option>
+                                                        <option value="0_2">2 Years</option>
+                                                        <option value="1_3">3 Semesters</option>
+                                                        <option value="0_3">3 Years</option>
+                                                        <option value="1_4">4 Semesters</option>
+                                                        <option value="0_4">4 Years</option>
+                                                        <option value="1_5">5 Semesters</option>
+                                                        <option value="0_5">5 Years</option>
+                                                        <option value="1_6">6 Semesters</option>
+                                                        <option value="1_7">7 Semesters</option>
+                                                        <option value="1_8">8 Semesters</option>
+                                                        <option value="1_9">9 Semesters</option>
+                                                        <option value="1_10">10 Semesters</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="cremark">Remark (if any)</label>
                                                     <textarea id="cremark" class="form-control" rows="2" placeholder="Enter Any Remark..."></textarea>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="offset-sm-8 col-md-2">
-                                                <div class="form-group">
-                                                    <button id="clear" class="btn btn-danger btn-block">Clear</button>
-                                                </div>
+                                            <div class="offset-md-2 col-md-2" style="align-self: center;">
+                                                <button id="clear" class="btn btn-danger btn-block">Clear</button>
                                             </div>
-                                            <div id="update" class="col-md-2" style="display: none;">
+                                            <div id="update" class="col-md-2" style="display: none; align-self: center;">
                                                 <button id="updatebtn" class="btn btn-primary btn-block">Update Course</button>
                                             </div>
-                                            <div id="add" class="col-md-2">
+                                            <div id="add" class="col-md-2" style="align-self: center;">
                                                 <button id="addbtn" class="btn btn-primary btn-block">Add Course</button>
                                             </div>
                                         </div>
@@ -150,9 +172,21 @@
         <!-- InputMask -->
         <script src="../../plugins/moment/moment.min.js"></script>
         <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
+        <!-- Select2 -->
+        <script src="../../plugins/select2/js/select2.full.min.js"></script>
         
         <script>
             $(function(){
+                //Initialize Select2 Elements
+                $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                })
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
                 //Money Euro
                 $('[data-mask]').inputmask()
             })
@@ -162,18 +196,20 @@
             function clearut(){
                 $('#courseau').html('Add new Course');
                 $('#cname').val('');
-                $('#cremark').val('');
-                $('#cfee').val(0.00);
                 $('#cid').val('');
+                $('#cfee').val(0.00);
+                $('#cp').val('');
+                $('#cremark').val('');
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'block');
             }
-            function setupdate(course_id, course_name, course_fee, course_remark)
+            function setupdate(course_id, course_name, course_fee, cp, course_remark)
             {
                 $('#courseau').html('Update Course');
                 $('#cid').val(course_id);
                 $('#cname').val(course_name);
                 $('#cfee').val(course_fee);
+                $('#cp').val(cp);
                 $('#cremark').val(course_remark);
                 $('#update').css('display', 'block');
                 $('#add').css('display', 'none');
@@ -188,6 +224,7 @@
                 var cid = $('#cid').val();
                 var cname = $('#cname').val();
                 var cfee = $('#cfee').val();
+                var cp = $('#cp').val();
                 var cremark = $('#cremark').val();
                 if(cname == '')
                 {
@@ -208,7 +245,7 @@
                     $.ajax({
                         type: "POST",
                         url: '../../includes/ajax.php',
-                        data: { 'cid': cid, 'cfee': cfee, 'course': cname, 'cremark': cremark, 'request': 'updateCourse' },
+                        data: { 'cid': cid, 'cfee': cfee, 'course': cname, 'cp': cp, 'cremark': cremark, 'request': 'updateCourse' },
                         success: function(res){
                             if(res == 0)
                             {
@@ -249,14 +286,20 @@
                             }
                             else if(res == 6)
                             {
+                                Swal.fire('Error!', 'This Course period cannot be blank!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 7)
+                            {
                                 Swal.fire('Success', 'Course successfully updated...', 'success');
                                 clearut();
                                 $('#cOverlay').css('display', 'none');
                                 showcontent();
                             }
-                            else if(res == 7)
+                            else if(res == 8)
                             {
-                                Swal.fire('Error!', 'Something went wrong', 'error');
+                                Swal.fire('Error!', 'Something went wrong!', 'error');
                                 $('#cOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
                             }
@@ -279,6 +322,7 @@
                 });
                 var cname = $('#cname').val();
                 var cfee = $('#cfee').val();
+                var cp = $('#cp').val();
                 var cremark = $('#cremark').val();
                 if(cname == '')
                 {
@@ -292,6 +336,10 @@
                 {
                     toastr.error('Please enter Course Fees!');
                 }
+                else if(cp == '')
+                {
+                    toastr.error('Please enter Course Period!');
+                }
                 else
                 {
                     $('#cOverlay').css('display', 'flex');
@@ -299,7 +347,7 @@
                     $.ajax({
                         type: 'POST',
                         url: '../../includes/ajax.php',
-                        data: { 'cname': cname, 'cfee': cfee, 'cremark': cremark, 'request': 'addCourse' },
+                        data: { 'cname': cname, 'cfee': cfee, 'cremark': cremark, 'cp': cp, 'request': 'addCourse' },
                         success: function(res){
                             if(res == 0)
                             {

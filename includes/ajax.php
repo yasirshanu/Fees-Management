@@ -558,6 +558,7 @@
             $cid = $_POST['cid'];
             $course = $_POST['course'];
             $cfee = $_POST['cfee'];
+            $cp = $_POST['cp'];
             $cremark = $_POST['cremark'];
             if(getrows('course', json_encode(['course_id' => $cid]), '') == 0)
             {
@@ -583,15 +584,22 @@
             {
                 echo 5;
             }
+            else if($cp == '')
+            {
+                echo 6;
+            }
             else
             {
-                if(update("course", "course_name='$course', course_fee='$cfee', course_remark='$cremark'", json_encode(['course_id' => $cid]), ''))
+                $co = explode("_", $cp);
+                $ctype = $co[0];
+                $cperiod = $co[1];
+                if(update("course", "course_name='$course', course_fee='$cfee', course_type='$ctype', course_period='$cperiod', course_remark='$cremark'", json_encode(['course_id' => $cid]), ''))
                 {
-                    echo 6;
+                    echo 7;
                 }
                 else
                 {
-                    echo 7;
+                    echo 8;
                 }
             }
         }
@@ -599,6 +607,9 @@
         {
             $cname = $_POST['cname'];
             $cfee = $_POST['cfee'];
+            $cp = explode("_", $_POST['cp']);
+            $type = $cp[0];
+            $count = $cp[1];
             $cremark = $_POST['cremark'];
             if($cname == '')
             {
@@ -624,7 +635,7 @@
             {
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('course', json_encode(['course_name' => $cname, 'course_fee'=> $cfee, 'course_remark' => $cremark, 'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('course', json_encode(['course_name' => $cname, 'course_fee'=> $cfee, 'course_type' => $type, 'course_period' => $count, 'course_remark' => $cremark, 'added_by' => $added_by, 'added_time' => $time])))
                 {
                     echo 5;
                 }
@@ -643,6 +654,7 @@
                         <th>#</th>
                         <th>Course Name</th>
                         <th>Course Fee</th>
+                        <th>Course Period</th>
                         <th>Remark</th>
                         <th>Added By</th>
                         <th>Added Time</th>
@@ -661,6 +673,37 @@
                                 <td><?php echo $i; ?></td>
                                 <td><?php echo $row['course_name']; ?></td>
                                 <td>₹ <?php echo $row['course_fee']; ?></td>
+                                <td>
+                                    <?php
+                                        $period = $row['course_period'];
+                                        $ctype = $row['course_type'];
+                                        $cp = $ctype."_".$period;
+                                        if($ctype == 0)
+                                        {
+                                            echo $period;
+                                            if($period == 1)
+                                            {
+                                                echo " Year";
+                                            }
+                                            else
+                                            {
+                                                echo " Years";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            echo $period;
+                                            if($period == 1)
+                                            {
+                                                echo " Semester";
+                                            }
+                                            else
+                                            {
+                                                echo " Semesters";
+                                            }
+                                        }
+                                    ?>
+                                </td>
                                 <td><?php echo $row['course_remark']; ?></td>
                                 <td>
                                     <?php
@@ -672,7 +715,7 @@
                                 </td>
                                 <td><?php echo date("d-m-Y h:i:s A", $row['added_time']); ?></td>
                                 <td>
-                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $cp; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
                                     <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
                                 </td>
                             </tr>
