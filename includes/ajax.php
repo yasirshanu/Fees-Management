@@ -767,7 +767,6 @@
             $f_name = $_POST['fname'];
             $m_name = $_POST['mname'];
             $dob = $_POST['dob'];
-            $course = $_POST['course'];
             $enroll = $_POST['enroll'];
             $roll = $_POST['roll'];
             if(getrows('student', json_encode(['student_id' => $sid]), '') == 0)
@@ -802,28 +801,17 @@
             {
                 echo 7;
             }
-            else if($course == '')
-            {
-                echo 8;
-            }
-            else if(getrows('course', json_encode(['course_id' => $course]), '') != 1)
-            {
-                echo 9;
-            }
             else
             {
                 
                 $cdob = strtotime($dob);
-                $course_fee = getvalue('course_fee', 'course', json_encode(['course_id' => $course]), '');
-                $course_type = getvalue('course_type', 'course', json_encode(['course_id' => $course]), '');
-                $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
-                if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', course='$course', course_fee='$course_fee', course_type='$course_type', course_period='$course_period', enroll='$enroll', roll='$roll'", json_encode(['student_id' => $sid]), ''))
+                if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', enroll='$enroll', roll='$roll'", json_encode(['student_id' => $sid]), ''))
                 {
-                    echo 10;
+                    echo 8;
                 }
                 else
                 {
-                    echo 11;
+                    echo 9;
                 }
             }
         }
@@ -936,7 +924,7 @@
                                 </td>
                                 <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
                                 <td>
-                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['course']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>')"></i> 
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>')"></i> 
                                     <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
                                 </td>
                             </tr>

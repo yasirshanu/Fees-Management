@@ -210,13 +210,14 @@
                 $('#fname').val('');
                 $('#mname').val('');
                 $('#dob').val('');
+                $('#course').removeAttr('disabled');
                 $('#course').val('');
                 $('#enroll').val('');
                 $('#roll').val('');
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'inline-block');
             }
-            function setupdate(sid, sname, fname, mname, dob, course, enroll, roll){
+            function setupdate(sid, sname, fname, mname, dob, enroll, roll){
                 clearu();
                 $('#add').css('display', 'none');
                 $('#update').css('display', 'block');
@@ -226,7 +227,7 @@
                 $('#fname').val(fname);
                 $('#mname').val(mname);
                 $('#dob').val(dob);
-                $('#course').val(course);
+                $('#course').attr('disabled', 'disabled');
                 $('#enroll').val(enroll);
                 $('#roll').val(roll);
             }
@@ -236,7 +237,6 @@
                 var fname = $('#fname').val();
                 var mname = $('#mname').val();
                 var dob = $('#dob').val();
-                var course = $('#course').val();
                 var enroll = $('#enroll').val();
                 var roll = $('#roll').val();
                 if(sid != '')
@@ -285,12 +285,6 @@
                         $('#overlay').css('display', 'none');
                         toastr.error('Please enter Date of Birth!');
                     }
-                    else if(course == '')
-                    {
-                        $('#studentOverlay').css('display', 'none');
-                        $('#overlay').css('display', 'none');
-                        toastr.error('Please select course!');
-                    }
                     else if(enroll.length > 30)
                     {
                         $('#studentOverlay').css('display', 'none');
@@ -308,7 +302,7 @@
                         $.ajax({
                             type: 'POST',
                             url: '../../includes/ajax.php',
-                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'enroll': enroll, 'roll': roll, 'request': 'updateStudent' },
+                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'request': 'updateStudent' },
                             success: function(res){
                                 if(res == 0)
                                 {
@@ -361,23 +355,11 @@
                                 else if(res == 8)
                                 {
                                     $('#studentOverlay').css('display', 'none');
-                                    $('#overlay').css('display', 'none');
-                                    Swal.fire('Error!', 'Please select Course!', 'error');
-                                }
-                                else if(res == 9)
-                                {
-                                    $('#studentOverlay').css('display', 'none');
-                                    $('#overlay').css('display', 'none');
-                                    Swal.fire('Error!', 'Invalid Course!', 'error');
-                                }
-                                else if(res == 10)
-                                {
-                                    $('#studentOverlay').css('display', 'none');
                                     clearu();
                                     showcontent();
                                     Swal.fire('success!', 'User updated successfully!', 'success');
                                 }
-                                else if(res == 11)
+                                else if(res == 9)
                                 {
                                     $('#studentOverlay').css('display', 'none');
                                     $('#overlay').css('display', 'none');
