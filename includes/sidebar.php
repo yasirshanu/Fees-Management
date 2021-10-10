@@ -34,6 +34,12 @@
                         <p>Course Management</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="../student" class="nav-link <?php if($page == "Student Management")echo "active"; ?>">
+                        <i class="nav-icon fas fa-user-graduate"></i>
+                        <p>Student Management</p>
+                    </a>
+                </li>
                 <li class="nav-item <?php if($page == 'User Type Management' || $page == 'User Management')echo "menu-open"; ?>">
                     <a href="#" class="nav-link <?php if($page == 'User Type Management' || $page == 'User Management')echo "active"; ?>">
                         <i class="nav-icon fas fa-user"></i>

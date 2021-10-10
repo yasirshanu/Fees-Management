@@ -162,7 +162,7 @@
                                             echo $first." ".$middle." ".$last;
                                         ?>
                                     </td>
-                                    <td><?php echo date("d-m-Y h:i:s A", $row['time']); ?></td>
+                                    <td><?php echo date("d M Y h:i:s A", $row['time']); ?></td>
                                     <td>
                                         <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['usertype_id']; ?>', '<?php echo $row['usertype_name']; ?>')"></i> 
                                         <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?>
@@ -505,7 +505,7 @@
                                             echo $first." ".$middle." ".$last;
                                         ?>
                                     </td>
-                                    <td><?php echo date("d-m-Y h:i:s A", $row['time']); ?></td>
+                                    <td><?php echo date("d M Y h:i:s A", $row['time']); ?></td>
                                     <td>
                                         <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="updateuser('<?php echo $row['user_id']; ?>', '<?php echo $row['fname']; ?>', '<?php echo $row['mname']; ?>', '<?php echo $row['lname']; ?>', '<?php echo $row['usertype']; ?>', '<?php echo $row['username']; ?>', '<?php echo $row['email']; ?>')"></i> 
                                         <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="deluser('<?php echo $row['user_id']; ?>')"></i>
@@ -713,7 +713,7 @@
                                         echo $first." ".$middle." ".$last;
                                     ?>
                                 </td>
-                                <td><?php echo date("d-m-Y h:i:s A", $row['added_time']); ?></td>
+                                <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
                                 <td>
                                     <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $cp; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
                                     <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
@@ -733,6 +733,208 @@
                         "searching": true,
                         "ordering": false,
                         "info": false,
+                        "autoWidth": true,
+                        "responsive": true,
+                        "buttons": ["pdf", "print"]
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
+        }
+        else if($_POST['request'] == 'updateStudent')
+        {
+            $sid = $_POST['sid'];
+            $sname = $_POST['sname'];
+            $f_name = $_POST['fname'];
+            $m_name = $_POST['mname'];
+            $dob = $_POST['dob'];
+            $course = $_POST['course'];
+            $enroll = $_POST['enroll'];
+            $roll = $_POST['roll'];
+            if(getrows('student', json_encode(['student_id' => $sid]), '') == 0)
+            {
+                echo 0;
+            }
+            else if($sname == '')
+            {
+                echo 1;
+            }
+            else if(strlen($sname) > 50)
+            {
+                echo 2;
+            }
+            else if($f_name == '')
+            {
+                echo 3;
+            }
+            else if(strlen($f_name) > 50)
+            {
+                echo 4;
+            }
+            else if($m_name == '')
+            {
+                echo 5;
+            }
+            else if(strlen($m_name) > 50)
+            {
+                echo 6;
+            }
+            else if($dob == '')
+            {
+                echo 7;
+            }
+            else if($course == '')
+            {
+                echo 8;
+            }
+            else if(getrows('course', json_encode(['course_id' => $course]), '') != 1)
+            {
+                echo 9;
+            }
+            else
+            {
+                
+                $cdob = strtotime($dob);
+                $course_fee = getvalue('course_fee', 'course', json_encode(['course_id' => $course]), '');
+                $course_type = getvalue('course_type', 'course', json_encode(['course_id' => $course]), '');
+                $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
+                if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', course='$course', course_fee='$course_fee', course_type='$course_type', course_period='$course_period', enroll='$enroll', roll='$roll'", json_encode(['student_id' => $sid]), ''))
+                {
+                    echo 10;
+                }
+                else
+                {
+                    echo 11;
+                }
+            }
+        }
+        else if($_POST['request'] == 'addStudent')
+        {
+            $sname = $_POST['sname'];
+            $f_name = $_POST['fname'];
+            $m_name = $_POST['mname'];
+            $dob = $_POST['dob'];
+            $course = $_POST['course'];
+            $enroll = $_POST['enroll'];
+            $roll = $_POST['roll'];
+            if($sname == '')
+            {
+                echo 0;
+            }
+            else if(strlen($sname) > 50)
+            {
+                echo 1;
+            }
+            else if($f_name == '')
+            {
+                echo 2;
+            }
+            else if(strlen($f_name) > 50)
+            {
+                echo 3;
+            }
+            else if($m_name == '')
+            {
+                echo 4;
+            }
+            else if(strlen($m_name) > 50)
+            {
+                echo 5;
+            }
+            else if($dob == '')
+            {
+                echo 6;
+            }
+            else if($course == '')
+            {
+                echo 7;
+            }
+            else if(getrows('course', json_encode(['course_id' => $course]), '') != 1)
+            {
+                echo 8;
+            }
+            else
+            {
+                $cdob = strtotime($dob);
+                $course_fee = getvalue('course_fee', 'course', json_encode(['course_id' => $course]), '');
+                $course_type = getvalue('course_type', 'course', json_encode(['course_id' => $course]), '');
+                $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
+                $time = time();
+                $added_by = $_SESSION['user_id'];
+                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'added_by' => $added_by, 'added_time' => $time])))
+                {
+                    echo 9;
+                }
+                else
+                {
+                    echo 10;
+                }
+            }
+        }
+        else if($_POST['request'] == 'getStudentsData')
+        {
+            ?>
+            <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Father's Name</th>
+                        <th>Mother's Name</th>
+                        <th>Date of Birth</th>
+                        <th>Course</th>
+                        <th>Enrollment Number</th>
+                        <th>Roll Number</th>
+                        <th>Added By</th>
+                        <th>Added Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $i = 1;
+                        $rows = getrows('student', '', 'student_id > 0');
+                        $result = getresult('*', 'student', '', 'student_id > 0', 'added_time', '', '');
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            ?>
+                            <tr>
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $row['student_name']; ?></td>
+                                <td><?php echo $row['f_name']; ?></td>
+                                <td><?php echo $row['m_name']; ?></td>
+                                <td><?php echo date("d M Y", $row['dob']); ?></td>
+                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
+                                <td><?php echo $row['enroll']; ?></td>
+                                <td><?php echo $row['roll']; ?></td>
+                                <td>
+                                    <?php
+                                        $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        $middle = getvalue('mname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                        echo $first." ".$middle." ".$last;
+                                    ?>
+                                </td>
+                                <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
+                                <td>
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['course']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>')"></i> 
+                                    <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
+                                </td>
+                            </tr>
+                            <?php
+                            $i++;
+                        }
+                    ?>
+                </tbody>
+            </table>
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
                         "autoWidth": true,
                         "responsive": true,
                         "buttons": ["pdf", "print"]
