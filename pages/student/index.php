@@ -121,6 +121,43 @@
                                                     <input type="number" id="roll" class="form-control" placeholder="Enter Roll Number">
                                                 </div>
                                             </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="email">Email:</label>
+                                                    <input type="email" id="email" class="form-control" placeholder="Enter Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="mob1">Primary Mobile Number:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                                        </div>
+                                                        <input type="text" id="mob1" class="form-control" data-inputmask='"mask": "9999999999"' placeholder="Enter Mobile Number" data-mask>
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="mob2">Secondary Mobile Number:</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
+                                                        </div>
+                                                        <input type="text" id="mob2" class="form-control" data-inputmask='"mask": "9999999999"' placeholder="Enter Mobile Number" data-mask>
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="address">Complete Address:</label>
+                                                    <input type="text" id="address" class="form-control" placeholder="Enter Complete Address">
+                                                    <!-- /.input group -->
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="offset-sm-6 col-md-3">
@@ -186,6 +223,9 @@
         <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
         <!-- Select2 -->
         <script src="../../plugins/select2/js/select2.full.min.js"></script>
+<!-- InputMask -->
+<script src="../../plugins/moment/moment.min.js"></script>
+<script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
 
         <script>
             $(function () {
@@ -199,6 +239,8 @@
                     showConfirmButton: false,
                     timer: 3000
                 });
+                //Money Euro
+                $('[data-mask]').inputmask()
             })
             document.getElementById("clear").addEventListener("click", clearu);
             document.getElementById("addbtn").addEventListener("click", addstudent);
@@ -214,10 +256,14 @@
                 $('#course').val('');
                 $('#enroll').val('');
                 $('#roll').val('');
+                $('#email').val('');
+                $('#mob1').val('');
+                $('#mob2').val('');
+                $('#address').val('');
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'inline-block');
             }
-            function setupdate(sid, sname, fname, mname, dob, enroll, roll){
+            function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, address){
                 clearu();
                 $('#add').css('display', 'none');
                 $('#update').css('display', 'block');
@@ -230,6 +276,10 @@
                 $('#course').attr('disabled', 'disabled');
                 $('#enroll').val(enroll);
                 $('#roll').val(roll);
+                $('#email').val(email);
+                $('#mob1').val(mob1);
+                $('#mob2').val(mob2);
+                $('#address').val(address);
             }
             function update(){
                 var sid = $('#sid').val();
@@ -239,6 +289,10 @@
                 var dob = $('#dob').val();
                 var enroll = $('#enroll').val();
                 var roll = $('#roll').val();
+                var email = $('#email').val();
+                var mob1 = $('#mob1').val().replace("_", "");
+                var mob2 = $('#mob2').val().replace("_", "");
+                var address = $('#address').val();
                 if(sid != '')
                 {
                     $('#studentOverlay').css('display', 'flex');
@@ -297,12 +351,42 @@
                         $('#overlay').css('display', 'none');
                         toastr.error('Roll number cannot be more than 50 characters!');
                     }
+                    else if((email != '') && (email.length < 5))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Email must have atleast 5 characters!');
+                    }
+                    else if((email != '') && (email.length > 50))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Email must not have more than 50 characters!');
+                    }
+                    else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Email!');
+                    }
+                    else if((mob1 != '') && (mob1.length != 10))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Primary Mobile number!');
+                    }
+                    else if((mob2 != '') && (mob2.length != 10))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Secondary Mobile number!');
+                    }
                     else
                     {
                         $.ajax({
                             type: 'POST',
                             url: '../../includes/ajax.php',
-                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'request': 'updateStudent' },
+                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'email':email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'updateStudent' },
                             success: function(res){
                                 if(res == 0)
                                 {
@@ -367,11 +451,41 @@
                                 else if(res == 10)
                                 {
                                     $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
+                                }
+                                else if(res == 11)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
+                                }
+                                else if(res == 12)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Email!', 'error');
+                                }
+                                else if(res == 13)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                                }
+                                else if(res == 14)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                                }
+                                else if(res == 15)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
                                     clearu();
                                     showcontent();
                                     Swal.fire('success!', 'User updated successfully!', 'success');
                                 }
-                                else if(res == 11)
+                                else if(res == 16)
                                 {
                                     $('#studentOverlay').css('display', 'none');
                                     $('#overlay').css('display', 'none');
@@ -381,7 +495,7 @@
                                 {
                                     $('#studentOverlay').css('display', 'none');
                                     $('#overlay').css('display', 'none');
-                                    Swal.fire('Error!', res, 'error');
+                                    Swal.fire('Error!', 'Something went wrong!', 'error');
                                 }
                             }
                         })
@@ -402,6 +516,10 @@
                 var course = $('#course').val();
                 var enroll = $('#enroll').val();
                 var roll = $('#roll').val();
+                var email = $('#email').val();
+                var mob1 = $('#mob1').val().val().replace("_", "");;
+                var mob2 = $('#mob2').val().val().replace("_", "");;
+                var address = $('#address').val();
                 $('#studentOverlay').css('display', 'flex');
                 $('#overlay').css('display', 'flex');
                 if(sname == '')
@@ -464,12 +582,42 @@
                     $('#overlay').css('display', 'none');
                     toastr.error('Roll number cannot be more than 50 characters!');
                 }
+                else if((email != '') && (email.length < 5))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Email must have atleast 5 characters!');
+                }
+                else if((email != '') && (email.length > 50))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Email must not have more than 50 characters!');
+                }
+                else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Email!');
+                }
+                else if((mob1 != '') && (mob1.length != 10))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Primary Mobile number!');
+                }
+                else if((mob2 != '') && (mob2.length != 10))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Secondary Mobile number!');
+                }
                 else
                 {
                     $.ajax({
                         type: 'POST',
                         url: '../../includes/ajax.php',
-                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'enroll': enroll, 'roll': roll, 'request': 'addStudent' },
+                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'addStudent' },
                         success: function(res){
                             if(res == 0)
                             {
@@ -539,12 +687,42 @@
                             }
                             else if(res == 11)
                             {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
+                            }
+                            else if(res == 12)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
+                            }
+                            else if(res == 13)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Email!', 'error');
+                            }
+                            else if(res == 14)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                            }
+                            else if(res == 15)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                            }
+                            else if(res == 16)
+                            {
                                 showcontent();
                                 clearu();
                                 $('#studentOverlay').css('display', 'none');
                                 Swal.fire('Success!', 'Student enrolled successfully!', 'success');
                             }
-                            else if(res == 12)
+                            else if(res == 17)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
@@ -560,37 +738,6 @@
                     })
                 }
             }
-            function deluser(uid)
-            {
-                $('#overlay').css('display', 'flex');
-                $.ajax({
-                    type: 'POST',
-                    url: '../../includes/ajax.php',
-                    data: { 'userid': uid, 'request': 'delUser' },
-                    success: function(res){
-                        if(res == 0)
-                        {
-                            showcontent();
-                            Swal.fire('Success!', 'User deleted successfully!', 'success');
-                        }
-                        else if(res == 1)
-                        {
-                            $('#overlay').css('display', 'none');
-                            Swal.fire('Error!', 'Something went wrong!', 'error');
-                        }
-                        else if(res == 2)
-                        {
-                            $('#overlay').css('display', 'none');
-                            Swal.fire('Error!', 'Invalid User!', 'error');
-                        }
-                        else
-                        {
-                            $('#overlay').css('display', 'none');
-                            Swal.fire('Error!', 'Invalid User!', 'error');
-                        }
-                    }
-                })
-            }
             function showcontent()
             {
                 $.ajax({
@@ -602,6 +749,23 @@
                         $('#overlay').css('display', 'none');
                     }
                 })
+            }
+            function showModal(sname, fname, mname, dob, course, enroll, roll, email, mob1, mob2, address, added_by, added_time){
+                $('#modal-head').html(sname);
+                $('#modal-sname').html(sname);
+                $('#modal-fname').html(fname);
+                $('#modal-mname').html(mname);
+                $('#modal-dob').html(dob);
+                $('#modal-course').html(course);
+                $('#modal-enroll').html(enroll);
+                $('#modal-roll').html(roll);
+                $('#modal-email').html(email);
+                $('#modal-mob1').html(mob1);
+                $('#modal-mob2').html(mob2);
+                $('#modal-address').html(address);
+                $('#modal-added_by').html(added_by);
+                $('#modal-added_time').html(added_time);
+                $('#student-modal').modal('show')
             }
         </script>
     </body>
