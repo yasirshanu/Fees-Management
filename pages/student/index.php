@@ -111,6 +111,23 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
+                                                    <label for="eyear">Enrollment Year:</label>
+                                                    <select id="eyear" class="form-control">
+                                                        <option value="" disabled>--Select Enrollment Year--</option>
+                                                        <?php
+                                                            $j = date('Y', time());
+                                                            for($i = 2010; $i <= $j; $i++)
+                                                            {
+                                                                ?>
+                                                                <option value="<?php echo $i; ?>" <?php if($i == $j)echo "selected"; ?>><?php echo $i; ?></option>
+                                                                <?php
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
                                                     <label for="enroll">Enrollment Number:</label>
                                                     <input type="text" id="enroll" class="form-control" placeholder="Enter Enrollment Number">
                                                 </div>
@@ -151,10 +168,11 @@
                                                     <!-- /.input group -->
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="address">Complete Address:</label>
-                                                    <input type="text" id="address" class="form-control" placeholder="Enter Complete Address">
+                                                    <textarea id="address" rows="3" class="form-control" style="resize: none;" placeholder="Enter Complete Address"></textarea>
+                                                    <!-- <input type="text" id="address" class="form-control" placeholder="Enter Complete Address"> -->
                                                     <!-- /.input group -->
                                                 </div>
                                             </div>
@@ -254,6 +272,9 @@
                 $('#dob').val('');
                 $('#course').removeAttr('disabled');
                 $('#course').val('');
+                $('#course').trigger('change');
+                $('#eyear').val('2021');
+                $('#eyear').removeAttr('disabled');
                 $('#enroll').val('');
                 $('#roll').val('');
                 $('#email').val('');
@@ -274,6 +295,8 @@
                 $('#mname').val(mname);
                 $('#dob').val(dob);
                 $('#course').attr('disabled', 'disabled');
+                $('#eyear').val('');
+                $('#eyear').attr('disabled', 'disabled');
                 $('#enroll').val(enroll);
                 $('#roll').val(roll);
                 $('#email').val(email);
@@ -514,11 +537,12 @@
                 var mname = $('#mname').val();
                 var dob = $('#dob').val();
                 var course = $('#course').val();
+                var eyear = $('#eyear').val();
                 var enroll = $('#enroll').val();
                 var roll = $('#roll').val();
                 var email = $('#email').val();
-                var mob1 = $('#mob1').val().val().replace("_", "");;
-                var mob2 = $('#mob2').val().val().replace("_", "");;
+                var mob1 = $('#mob1').val().replace("_", "");
+                var mob2 = $('#mob2').val().replace("_", "");
                 var address = $('#address').val();
                 $('#studentOverlay').css('display', 'flex');
                 $('#overlay').css('display', 'flex');
@@ -570,6 +594,12 @@
                     $('#overlay').css('display', 'none');
                     toastr.error('Please select course!');
                 }
+                else if(eyear == '' || eyear < 2010)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Please select Enrollment Year!');
+                }
                 else if(enroll.length > 30)
                 {
                     $('#studentOverlay').css('display', 'none');
@@ -617,7 +647,7 @@
                     $.ajax({
                         type: 'POST',
                         url: '../../includes/ajax.php',
-                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'addStudent' },
+                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'eyear': eyear, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'addStudent' },
                         success: function(res){
                             if(res == 0)
                             {
@@ -673,56 +703,62 @@
                                 $('#overlay').css('display', 'none');
                                 Swal.fire('Error!', 'Invalid Course!', 'error');
                             }
-                            else if(res == 9)
+                            else if(res == 9 || res == 10 || res == 11)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
-                            }
-                            else if(res == 10)
-                            {
-                                $('#studentOverlay').css('display', 'none');
-                                $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'This Roll number already exist!', 'error');
-                            }
-                            else if(res == 11)
-                            {
-                                $('#studentOverlay').css('display', 'none');
-                                $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
+                                Swal.fire('Error!', 'Invalid Enrollment Year!', 'error');
                             }
                             else if(res == 12)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
+                                Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
                             }
                             else if(res == 13)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'Invalid Email!', 'error');
+                                Swal.fire('Error!', 'This Roll number already exist!', 'error');
                             }
                             else if(res == 14)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                                Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
                             }
                             else if(res == 15)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
-                                Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                                Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
                             }
                             else if(res == 16)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Email!', 'error');
+                            }
+                            else if(res == 17)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                            }
+                            else if(res == 18)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                            }
+                            else if(res == 19)
                             {
                                 showcontent();
                                 clearu();
                                 $('#studentOverlay').css('display', 'none');
                                 Swal.fire('Success!', 'Student enrolled successfully!', 'success');
                             }
-                            else if(res == 17)
+                            else if(res == 20)
                             {
                                 $('#studentOverlay').css('display', 'none');
                                 $('#overlay').css('display', 'none');
@@ -750,13 +786,14 @@
                     }
                 })
             }
-            function showModal(sname, fname, mname, dob, course, enroll, roll, email, mob1, mob2, address, added_by, added_time){
+            function showModal(sname, fname, mname, dob, course, eyear, enroll, roll, email, mob1, mob2, address, added_by, added_time){
                 $('#modal-head').html(sname);
                 $('#modal-sname').html(sname);
                 $('#modal-fname').html(fname);
                 $('#modal-mname').html(mname);
                 $('#modal-dob').html(dob);
                 $('#modal-course').html(course);
+                $('#modal-eyear').html(eyear);
                 $('#modal-enroll').html(enroll);
                 $('#modal-roll').html(roll);
                 $('#modal-email').html(email);

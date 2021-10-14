@@ -199,6 +199,7 @@
                 $('#cid').val('');
                 $('#cfee').val(0.00);
                 $('#cp').val('');
+                $('#cp').trigger('change');
                 $('#cremark').val('');
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'block');
@@ -246,6 +247,7 @@
                 $('#cname').val(course_name);
                 $('#cfee').val(course_fee);
                 $('#cp').val(cp);
+                $('#cp').trigger('change');
                 $('#cremark').val(course_remark);
                 $('#update').css('display', 'block');
                 $('#add').css('display', 'none');
@@ -330,8 +332,8 @@
                             {
                                 Swal.fire('Success', 'Course successfully updated...', 'success');
                                 clearut();
-                                $('#cOverlay').css('display', 'none');
                                 showcontent();
+                                $('#cOverlay').css('display', 'none');
                             }
                             else if(res == 8)
                             {
@@ -418,10 +420,9 @@
                             else if(res == 5)
                             {
                                 Swal.fire('Success', 'Course successfully added...', 'success');
-                                $('#cname').val('');
-                                $('#cfee').val(0.00);
-                                $('#cOverlay').css('display', 'none');
+                                clearut();
                                 showcontent();
+                                $('#cOverlay').css('display', 'none');
                             }
                             else if(res == 6)
                             {

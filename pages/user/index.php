@@ -235,6 +235,7 @@
                 $('#ulname').removeClass('is-valid');
                 $('#ulname').removeClass('is-invalid');
                 $('#usertype').val('');
+                $('#usertype').trigger('change');
                 $('#ustatus').html('');
                 $('#uname').val('');
                 $('#uname').removeClass('is-valid');
@@ -502,6 +503,7 @@
                 $('#umname').val(mname);
                 $('#ulname').val(lname);
                 $('#usertype').val(ut);
+                $('#usertype').trigger('change');
                 $('#uname').val(uname);
                 $('#email').val(email);
             }

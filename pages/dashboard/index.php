@@ -50,7 +50,7 @@
                         <div class="row">
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
-                                <div class="small-box bg-warning">
+                                <div class="small-box bg-info">
                                     <div class="inner">
                                         <h3><?php echo getrows('course', '', 'course_id > 0'); ?></h3>
                                         <p>Available Courses</p>
@@ -63,7 +63,7 @@
                             </div>
                             <div class="col-lg-3 col-6">
                                 <!-- small box -->
-                                <div class="small-box bg-primary">
+                                <div class="small-box bg-success">
                                     <div class="inner">
                                         <h3><?php echo getrows('student', '', 'student_id > 0'); ?></h3>
                                         <p>Enrolled Students</p>

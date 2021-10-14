@@ -853,6 +853,7 @@
             $m_name = $_POST['mname'];
             $dob = $_POST['dob'];
             $course = $_POST['course'];
+            $eyear = $_POST['eyear'];
             $enroll = $_POST['enroll'];
             $roll = $_POST['roll'];
             $email = $_POST['email'];
@@ -895,33 +896,45 @@
             {
                 echo 8;
             }
-            else if(($enroll != '') && (getrows('student', json_encode(['enroll' => $enroll]), '') > 0))
+            else if($eyear == '')
             {
                 echo 9;
             }
-            else if(($roll != '') && (getrows('student', json_encode(['roll' => $roll]), '') > 0))
+            else if($course < 2010)
             {
                 echo 10;
             }
-            else if(($email != '') && (strlen($email) < 5))
+            else if($course > date('Y', time()))
             {
                 echo 11;
             }
-            else if(($email != '') && (strlen($email) > 50))
+            else if(($enroll != '') && (getrows('student', json_encode(['enroll' => $enroll]), '') > 0))
             {
                 echo 12;
             }
-            else if(($email != '') && (!filter_var($email, FILTER_VALIDATE_EMAIL)))
+            else if(($roll != '') && (getrows('student', json_encode(['roll' => $roll]), '') > 0))
             {
                 echo 13;
             }
-            else if(($mob1 != '') && (strlen($mob1) != 10))
+            else if(($email != '') && (strlen($email) < 5))
             {
                 echo 14;
             }
-            else if(($mob2 != '') && (strlen($mob2) != 10))
+            else if(($email != '') && (strlen($email) > 50))
             {
                 echo 15;
+            }
+            else if(($email != '') && (!filter_var($email, FILTER_VALIDATE_EMAIL)))
+            {
+                echo 16;
+            }
+            else if(($mob1 != '') && (strlen($mob1) != 10))
+            {
+                echo 17;
+            }
+            else if(($mob2 != '') && (strlen($mob2) != 10))
+            {
+                echo 18;
             }
             else
             {
@@ -931,13 +944,13 @@
                 $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'added_by' => $added_by, 'added_time' => $time])))
                 {
-                    echo 16;
+                    echo 19;
                 }
                 else
                 {
-                    echo 17;
+                    echo 20;
                 }
             }
         }
@@ -981,7 +994,7 @@
                                         $added_by = $first." ".$middle." ".$last;
                                         $added_time = date("d M Y h:i:s A", $row['added_time']);
                                     ?>    
-                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
                                     <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>')"></i> 
                                     <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
                                 </td>
@@ -1022,6 +1035,10 @@
                                 <tr>
                                     <th>Course Enrolled</th>
                                     <td id="modal-course"></td>
+                                </tr>
+                                <tr>
+                                    <th>Enrollment Year</th>
+                                    <td id="modal-eyear"></td>
                                 </tr>
                                 <tr>
                                     <th>Enrollment Number</th>
