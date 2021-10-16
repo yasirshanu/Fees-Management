@@ -194,6 +194,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                     </div>
                                     <!-- /.card-body -->
                                     <div id="studentOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>

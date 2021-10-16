@@ -248,6 +248,7 @@
                 <!-- /.row -->
             </section>
             <!-- /.content -->
+            <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
         </div>
         <!-- ./wrapper -->
         <!-- Page specific script -->

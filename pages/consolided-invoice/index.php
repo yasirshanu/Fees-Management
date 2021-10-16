@@ -313,6 +313,7 @@
                                     </div>
                                 </div>
                                 <!-- /.invoice -->
+                                <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div>

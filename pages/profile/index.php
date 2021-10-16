@@ -160,6 +160,7 @@
                                         <h3 class="profile-username text-center"><?php echo $fullname; ?></h3>
                                         <p class="text-muted text-center"><?php echo $usert; ?></p>
                                         <a href="#" class="btn btn-primary btn-block btn-sm disabled"><b>Change Picture</b></a>
+                                        <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -270,6 +271,7 @@
                                                         </div>
                                                     </div>
                                                 </form>
+                                                <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                             </div>
                                             <!-- /.tab-pane -->
 
@@ -289,6 +291,7 @@
                                                         <i class="far fa-clock bg-gray"></i>
                                                     </div>
                                                 </div>
+                                                <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                             </div>
                                             <!-- /.tab-pane -->
                                         </div>
