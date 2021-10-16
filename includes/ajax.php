@@ -944,7 +944,7 @@
                 $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'student_email' => $email, 'student_mob1' => $mob1, 'student_mob2' => $mob2, 'student_address' => $address,'added_by' => $added_by, 'added_time' => $time])))
                 {
                     echo 19;
                 }
