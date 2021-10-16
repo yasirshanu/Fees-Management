@@ -55,7 +55,7 @@
         else
         {
             $condition = $custom;
-            $sql = "UPDATE $table SET $condition,";
+            $sql = "UPDATE $table SET $set WHERE $condition";
             return mysqli_query($conn, $sql);
         }
     }
@@ -179,5 +179,12 @@
             $rows = mysqli_num_rows(mysqli_query($conn, $sql));
             return $rows;
         }
+    }
+    function lastinsert()
+    {
+        global $conn;
+        $sql = "SELECT LAST_INSERT_ID() AS last";
+        $result = mysqli_fetch_array(mysqli_query($conn, $sql));
+        return $result['last'];
     }
 ?>

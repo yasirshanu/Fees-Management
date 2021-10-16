@@ -69,14 +69,14 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cname">Course Name <span class="text-danger">*</span></label>
+                                                    <label for="cname">Course Name: <span class="text-danger">*</span></label>
                                                     <input type="text" id="cname" class="form-control" placeholder="Enter Course Name">
                                                     <input type="hidden" id="cid" class="form-control" value="">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cfee">Total Fees <span class="text-danger">*</span></label>
+                                                    <label for="cfee">Course Total Tuition Fees: <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
@@ -87,7 +87,7 @@
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label for="cp">Course Period <span class="text-danger">*</span></label>
+                                                    <label for="cp">Course Period: <span class="text-danger">*</span></label>
                                                     <select id="cp" class="form-control select2bs4" style="width: 100%;">
                                                         <option selected="selected" value="" disabled>--Select System--</option>
                                                         <option value="1_1">1 Semester</option>
@@ -110,7 +110,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="cremark">Remark (if any)</label>
+                                                    <label for="cremark">Remark (if any):</label>
                                                     <textarea id="cremark" class="form-control" rows="2" placeholder="Enter Any Remark..."></textarea>
                                                 </div>
                                             </div>

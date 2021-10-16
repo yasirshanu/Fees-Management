@@ -900,11 +900,11 @@
             {
                 echo 9;
             }
-            else if($course < 2010)
+            else if($eyear < 2010)
             {
                 echo 10;
             }
-            else if($course > date('Y', time()))
+            else if($eyear > date('Y', time()))
             {
                 echo 11;
             }
@@ -954,6 +954,25 @@
                 }
             }
         }
+        else if($_POST['request'] == 'delStu')
+        {
+            $sid = $_POST['sid'];
+            if(getrows('student', json_encode(['student_id' => $sid]), '') == 0)
+            {
+                echo 0;
+            }
+            else
+            {
+                if(delete('student', json_encode(['student_id' => $sid]), ''))
+                {
+                    echo 1;
+                }
+                else
+                {
+                    echo 2;
+                }
+            }
+        }
         else if($_POST['request'] == 'getStudentsData')
         {
             ?>
@@ -993,10 +1012,10 @@
                                         $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
                                         $added_by = $first." ".$middle." ".$last;
                                         $added_time = date("d M Y h:i:s A", $row['added_time']);
-                                    ?>    
-                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                    ?>
+                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
                                     <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>')"></i> 
-                                    <!-- <?php if(getrows('confidential', json_encode(['usertype' => $row['usertype_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['usertype_id'] ?>')"></i><?php } ?> -->
+                                    <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
                                 </td>
                             </tr>
                             <?php
@@ -1075,7 +1094,7 @@
                             </table>
                         </div>
                         <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-primary">Payment Details</button>
+                            <a id="modal-receipt" href="" target="_blank"><button type="button" class="btn btn-primary">Payment Details</button></a>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -1110,6 +1129,417 @@
                 });
             </script>
             <?php
+        }
+        else if($_POST['request'] == 'headStatus')
+        {
+            $ihead = $_POST['ihead'];
+            $sid = $_POST['sid'];
+            if($ihead == '')
+            {
+                echo 0;
+            }
+            else if($ihead == 100 || $ihead == 101 || $ihead == 102 || $ihead == 103 || $ihead == 104 || $ihead == 105 || $ihead == 106 || $ihead == 107)
+            {
+                echo 1;
+            }
+            else
+            {
+                $ctype = getvalue('course_type', 'student', json_encode(['student_id' => $sid]), '');
+                $cperiod = getvalue('course_period', 'student', json_encode(['student_id' => $sid]), '');
+                $sy = $ihead;
+                for($i = 1; $i <= $cperiod; $i++)
+                {
+                    if($sy == $i)
+                    {
+                        echo 2;
+                    }
+                }
+                if($sy > $cperiod)
+                {
+                    echo 3;
+                }
+            }
+        }
+        else if($_POST['request'] == 'updatePayment')
+        {
+            $icid = $_POST['icid'];
+            $sid = $_POST['sid'];
+            $ihead = $_POST['ihead'];
+            $idesc = $_POST['idesc'];
+            $amount = $_POST['amount'];
+            $itax = $_POST['itax'];
+            $remark = $_POST['remark'];
+            $subt = sprintf('%.2f', ((($amount * $itax)/100) + $amount));
+            if($icid == '')
+            {
+                echo 0;
+            }
+            else if(getrows('invoice_content', json_encode(['invoice_content_id' => $icid]), '') != 1)
+            {
+                echo 1;
+            }
+            else if($ihead == '')
+            {
+                echo 2;
+            }
+            else if($idesc == '')
+            {
+                echo 3;
+            }
+            else if(getrows('invoice_content', '', "head='$ihead' AND dsc='$idesc' AND dsc!='Exam Fee (Backlog)' AND student_id='$sid' AND invoice_content_id != '$icid'") > 0)
+            {
+                echo 4;
+            }
+            else if($amount == '')
+            {
+                echo 5;
+            }
+            else if($itax == '')
+            {
+                echo 6;
+            }
+            else
+            {
+                if(update("invoice_content", "head='$ihead', dsc='$idesc', amount='$amount', tax='$itax', subt='$subt', remark='$remark'", json_encode(['invoice_content_id' => $icid]), ''))
+                {
+                    echo 7;
+                }
+                else
+                {
+                    echo 8;
+                }
+            }
+        }
+        else if($_POST['request'] == 'addPayment')
+        {
+            $sid = $_POST['sid'];
+            $ihead = $_POST['ihead'];
+            $idesc = $_POST['idesc'];
+            $amount = $_POST['amount'];
+            $itax = $_POST['itax'];
+            $remark = $_POST['remark'];
+            $subt = sprintf('%.2f', ((($amount * $itax)/100) + $amount));
+            if($sid == '')
+            {
+                echo 0;
+            }
+            else if(getrows('student', json_encode(['student_id' => $sid]), '') != 1)
+            {
+                echo 1;
+            }
+            else if($ihead == '')
+            {
+                echo 2;
+            }
+            else if($idesc == '')
+            {
+                echo 3;
+            }
+            else if(getrows('invoice_content', '', "head='$ihead' AND dsc='$idesc' AND dsc!='Exam Fee (Backlog)' AND student_id='$sid'") > 0)
+            {
+                echo 4;
+            }
+            else if($amount == '')
+            {
+                echo 5;
+            }
+            else if($itax == '')
+            {
+                echo 6;
+            }
+            else
+            {
+                $time = time();
+                $added_by = $_SESSION['user_id'];
+                if(insert('invoice_content', json_encode(['student_id' => $sid, 'head'=> $ihead, 'dsc' => $idesc, 'amount' => $amount, 'tax' => $itax, 'subt' => $subt, 'remark' => $remark, 'added_by' => $added_by, 'added_time' => $time])))
+                {
+                    echo 7;
+                }
+                else
+                {
+                    echo 8;
+                }
+            }
+        }
+        else if($_POST['request'] == 'delPay')
+        {
+            $icid = $_POST['icid'];
+            if(getrows('invoice_content', json_encode(['invoice_content_id' => $icid]), '') == 0)
+            {
+                echo 0;
+            }
+            else
+            {
+                if(delete('invoice_content', json_encode(['invoice_content_id' => $icid]), ''))
+                {
+                    echo 1;
+                }
+                else
+                {
+                    echo 2;
+                }
+            }
+        }
+        else if($_POST['request'] == 'getPaymentDetails')
+        {
+            $sid = $_POST['sid'];
+            ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="example1" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Payment Head</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>GST Rate</th>
+                                <th>Subtotal</th>
+                                <th>Added by</th>
+                                <th>Added Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $i = 1;
+                                $rows = getrows("invoice_content", "", "(invoice_id is NULL || invoice_id = '') AND student_id='$sid'");
+                                $result = getresult("*", "invoice_content", "", "(invoice_id is NULL || invoice_id = '') AND student_id='$sid'", 'added_time', '', '');
+                                while($row = mysqli_fetch_array($result))
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td>
+                                            <?php
+                                                $h = $row['head'];
+                                                if($h == 100)
+                                                {
+                                                    echo "Caution Money";
+                                                }
+                                                else if($h == 101)
+                                                {
+                                                    echo "Development Fee";
+                                                }
+                                                else if($h == 102)
+                                                {
+                                                    echo "ID Card Fee";
+                                                }
+                                                else if($h == 103)
+                                                {
+                                                    echo "Laboratory Fee";
+                                                }
+                                                else if($h == 104)
+                                                {
+                                                    echo "Library Fee";
+                                                }
+                                                else if($h == 105)
+                                                {
+                                                    echo "Training & Placement";
+                                                }
+                                                else if($h == 106)
+                                                {
+                                                    echo "Late Fee";
+                                                }
+                                                else if($h == 107)
+                                                {
+                                                    echo "Fee Concession";
+                                                }
+                                                else if($h == 108)
+                                                {
+                                                    echo "Other";
+                                                }
+                                                else
+                                                {
+                                                    $sid = $row['student_id'];
+                                                    $ctype = getvalue('course_type', 'student', json_encode(['student_id' => $sid]), '');
+                                                    $cperiod = getvalue('course_period', 'student', json_encode(['student_id' => $sid]), '');
+                                                    if($ctype == 0)
+                                                    {
+                                                        $set = '';
+                                                        for($a = 1; $a <= $cperiod; $a++)
+                                                        {
+                                                            if($a == $h)
+                                                            {
+                                                                $set = $h;
+                                                            }
+                                                        }
+                                                        if(isset($set) && $set != '')
+                                                        {
+                                                            echo "Year ".$set;
+                                                        }
+                                                        else
+                                                        {
+                                                            echo "Unknown";
+                                                        }
+                                                    }
+                                                    else if($ctype == 1)
+                                                    {
+                                                        $set = '';
+                                                        for($a = 1; $a <= $cperiod; $a++)
+                                                        {
+                                                            if($a == $h)
+                                                            {
+                                                                $set = $h;
+                                                            }
+                                                        }
+                                                        if(isset($set) && $set != '')
+                                                        {
+                                                            echo "Semester ".$set;
+                                                        }
+                                                        else
+                                                        {
+                                                            echo "Unknown";
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        echo "Unknown";
+                                                    }
+                                                }
+                                            ?>
+                                        </td>
+                                        <td><?php echo $row['dsc']; ?></td>
+                                        <td>₹<?php echo sprintf('%.2f', $row['amount']); ?></td>
+                                        <td><?php echo $row['tax']; ?>%</td>
+                                        <td>₹<?php echo sprintf('%.2f', $row['subt']); ?></td>
+                                        <td>
+                                            <?php
+                                                $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                $middle = getvalue('mname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                $added_by = $first." ".$middle." ".$last;
+                                                echo $added_by;
+                                            ?>
+                                        </td>
+                                        <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
+                                        <td>
+                                            <?php
+                                                if($row['remark'] == '')
+                                                {
+                                                    $remark = "No Remark!";
+                                                }
+                                                else
+                                                {
+                                                    $remark = $row['remark'];
+                                                }
+                                            ?>
+                                            <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $remark; ?>')"></i> 
+                                            <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['invoice_content_id']; ?>', '<?php echo $row['head']; ?>', '<?php echo $row['dsc']; ?>', '<?php echo $row['amount']; ?>', '<?php echo $row['tax']; ?>', '<?php echo $row['subt']; ?>', '<?php echo $row['remark']; ?>', '<?php if($row['dsc'] == 'Tuition Fee'){ echo 1; }else{ echo 0; } ?>')"></i> 
+                                            <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['invoice_content_id'] ?>')"></i>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                    $i++;
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="idate">Invoice Date:</label>
+                        <input type="date" id="idate" class="form-control" placeholder="Enter Invoice Date" value="<?php echo date('Y-m-d', time()); ?>">
+                    </div>
+                </div>
+                <div class="offset-md-6 col-md-3" style="align-self: end;">
+                    <div class="form-group">
+                        <input type="button" value="Generate Invoice" id="addInvoice" class="btn btn-success btn-block" onclick="addin()">
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="student-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-head" class="modal-title">Payment Remark</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Payment Remark</th>
+                                </tr>
+                                <tr>
+                                    <td id="modal-remark"></td>
+                                </tr>
+                                <tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": false,
+                        "ordering": false,
+                        "info": false,
+                        "autoWidth": true,
+                        "responsive": true
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
+        }
+        else if($_POST['request'] == 'addIn')
+        {
+            $time = time();
+            $added_by = $_SESSION['user_id'];
+            $sid = $_POST['sid'];
+            $idate = $_POST['idate'];
+            if($idate == '')
+            {
+                echo 0;
+            }
+            else
+            {
+                $newdate = strtotime($idate);
+                if(insert('invoice', json_encode(['invoice_date' => $newdate, 'added_by' => $added_by, 'added_time' => $time])))
+                {
+                    $lastid = lastinsert();
+                    $inv = "MAT/".date('Y', $time)."/".$lastid;
+                    if(update("invoice", "invoice_no='$inv'", json_encode(['invoice_id' => $lastid]), ""))
+                    {
+                        if(update("invoice_content", "invoice_id='$lastid'", "", "(invoice_id='' OR invoice_id IS NULL) AND student_id='$sid'"))
+                        {
+                            echo 1;
+                        }
+                        else
+                        {
+                            if(delete('invoice', json_encode(['invoice_id' => $lastid]), ''))
+                            {
+                                echo 2;
+                            }
+                            else
+                            {
+                                echo 3;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        echo 4;
+                    }
+                    
+                }
+                else
+                {
+                    echo 5;
+                }
+            }
         }
     }
 ?>

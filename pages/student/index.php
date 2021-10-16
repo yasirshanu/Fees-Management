@@ -284,6 +284,42 @@
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'inline-block');
             }
+            function delut(sid){
+                $('#studentOverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'sid': sid, 'request': 'delStu' },
+                    success: function(res){
+                        if(res == 0)
+                        {
+                            Swal.fire('Error!', 'Invalid delete request!', 'error');
+                            $('#studentOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else if(res == 1)
+                        {
+                            Swal.fire('Success!', 'Student deleted successfully...', 'success');
+                            showcontent();
+                            $('#studentOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else if(res == 2)
+                        {
+                            Swal.fire('Error!', 'Something went wrong!', 'error');
+                            $('#studentOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                        else
+                        {
+                            Swal.fire('Error!', 'Something went wrong!', 'error');
+                            $('#userOverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
             function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, address){
                 clearu();
                 $('#add').css('display', 'none');
@@ -786,7 +822,7 @@
                     }
                 })
             }
-            function showModal(sname, fname, mname, dob, course, eyear, enroll, roll, email, mob1, mob2, address, added_by, added_time){
+            function showModal(sid, sname, fname, mname, dob, course, eyear, enroll, roll, email, mob1, mob2, address, added_by, added_time){
                 $('#modal-head').html(sname);
                 $('#modal-sname').html(sname);
                 $('#modal-fname').html(fname);
@@ -802,6 +838,7 @@
                 $('#modal-address').html(address);
                 $('#modal-added_by').html(added_by);
                 $('#modal-added_time').html(added_time);
+                $('#modal-receipt').attr('href', '../consolided-invoice/?id=' + sid);
                 $('#student-modal').modal('show')
             }
         </script>
