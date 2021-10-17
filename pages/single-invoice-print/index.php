@@ -24,7 +24,9 @@
             $semail = $row1['student_email'];
             $smob1 = $row1['student_mob1'];
             $smob2 = $row1['student_mob2'];
-            $saddress = $row1['student_address'];
+            $sadd1 = $row1['student_add1'];
+            $sadd2 = $row1['student_add2'];
+            $sadd3 = $row1['student_add3'];
         }
         else
         {
@@ -70,11 +72,12 @@
                     <div class="col-sm-4 invoice-col">
                         From
                         <address>
-                            <strong>MAT College of Education</strong><br>
-                            A.B. Road, Satanwada,<br>
-                            Shivpuri (M.P.) PIN - 473551<br>
-                            Phone: +91-9039898978<br>
-                            Email: matcollege@gmail.com
+                            <strong><?php echo $insti_name; ?></strong><br>
+                            <?php if($insti_add1 != ''){ echo $insti_add1."<br>"; } ?>
+                            <?php if($insti_add2 != ''){ echo $insti_add2."<br>"; } ?>
+                            <?php if($insti_add3 != ''){ echo $insti_add3."<br>"; } ?>
+                            <?php if($insti_contact1 != '' || $insti_contact2 != ''){ echo "Contact No.: "; if($insti_contact1 != '' && $insti_contact2 == ''){ echo $insti_contact1."<br>"; }else if($insti_contact1 == '' && $insti_contact2 != ''){ echo $insti_contact2."<br>"; }else if($insti_contact1 != '' && $insti_contact2 != ''){ echo $insti_contact1.", ".$insti_contact2."<br>"; }} ?>
+                            <?php if($insti_email != ''){ echo "Email: ".$insti_email; } ?>
                         </address>
                     </div>
                     <!-- /.col -->
@@ -82,9 +85,11 @@
                         To
                         <address>
                             <strong><?php echo $sname; ?></strong><br>
-                            <?php echo $saddress; ?><br>
-                            Contact No.: <?php if($smob1 == ''){ echo $smob2; }else{ echo $smob1; } ?><br>
-                            Email: <?php echo $semail; ?>
+                            <?php if($sadd1 != ''){ echo $sadd1."<br>"; } ?>
+                            <?php if($sadd2 != ''){ echo $sadd2."<br>"; } ?>
+                            <?php if($sadd3 != ''){ echo $sadd3."<br>"; } ?>
+                            <?php if($smob1 != '' || $smob2 != ''){ echo "Contact No.: "; if($smob1 != '' && $smob2 == ''){ echo $smob1."<br>"; }else if($mob1 == '' && $mob2 != ''){ echo $smob2."<br>"; }else if($mob1 != '' && $mob != ''){ echo $mob1.", ".$mob2."<br>"; }} ?>
+                            <?php if($semail != ''){ echo "Email: ".$semail; } ?>
                         </address>
                     </div>
                     <!-- /.col -->
@@ -248,7 +253,6 @@
                 <!-- /.row -->
             </section>
             <!-- /.content -->
-            <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
         </div>
         <!-- ./wrapper -->
         <!-- Page specific script -->

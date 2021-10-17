@@ -772,7 +772,9 @@
             $email = $_POST['email'];
             $mob1 = str_replace("_", "",$_POST['mob1']);
             $mob2 = str_replace("_", "",$_POST['mob2']);
-            $address = $_POST['address'];
+            $add1 = $_POST['add1'];
+            $add2 = $_POST['add2'];
+            $add3 = $_POST['add3'];
             if(getrows('student', json_encode(['student_id' => $sid]), '') == 0)
             {
                 echo 0;
@@ -836,7 +838,7 @@
             else
             {
                 $cdob = strtotime($dob);
-                if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', enroll='$enroll', roll='$roll', student_email='$email', student_mob1='$mob1', student_mob2='$mob2', student_address='$address'", json_encode(['student_id' => $sid]), ''))
+                if(update("student", "student_name='$sname', f_name='$f_name', m_name='$m_name', dob='$cdob', enroll='$enroll', roll='$roll', student_email='$email', student_mob1='$mob1', student_mob2='$mob2', student_add1='$add1', student_add2='$add2', student_add3='$add3'", json_encode(['student_id' => $sid]), ''))
                 {
                     echo 15;
                 }
@@ -859,7 +861,9 @@
             $email = $_POST['email'];
             $mob1 = str_replace("_", "",$_POST['mob1']);
             $mob2 = str_replace("_", "",$_POST['mob2']);
-            $address = $_POST['address'];
+            $add1 = $_POST['add1'];
+            $add2 = $_POST['add2'];
+            $add3 = $_POST['add3'];
             if($sname == '')
             {
                 echo 0;
@@ -944,7 +948,7 @@
                 $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'student_email' => $email, 'student_mob1' => $mob1, 'student_mob2' => $mob2, 'student_address' => $address,'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'student_email' => $email, 'student_mob1' => $mob1, 'student_mob2' => $mob2, 'student_add1' => $add1, 'student_add2' => $add2, 'student_add3' => $add3,'added_by' => $added_by, 'added_time' => $time])))
                 {
                     echo 19;
                 }
@@ -1013,8 +1017,8 @@
                                         $added_by = $first." ".$middle." ".$last;
                                         $added_time = date("d M Y h:i:s A", $row['added_time']);
                                     ?>
-                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
-                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_address']; ?>')"></i> 
+                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>')"></i> 
                                     <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
                                 </td>
                             </tr>
@@ -1072,11 +1076,11 @@
                                     <td id="modal-email"></td>
                                 </tr>
                                 <tr>
-                                    <th>Primary Mobile Number</th>
+                                    <th>Primary Contact Number</th>
                                     <td id="modal-mob1"></td>
                                 </tr>
                                 <tr>
-                                    <th>Secondary Mobile Number</th>
+                                    <th>Secondary Contact Number</th>
                                     <td id="modal-mob2"></td>
                                 </tr>
                                 <tr>
@@ -1114,17 +1118,6 @@
                         "autoWidth": true,
                         "responsive": true,
                         "buttons": ["pdf", "print"]
-                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-                });
-                $(function () {
-                    $("#example2").DataTable({
-                        "paging": false,
-                        "lengthChange": false,
-                        "searching": false,
-                        "ordering": false,
-                        "info": false,
-                        "autoWidth": true,
-                        "responsive": false,
                     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
                 });
             </script>

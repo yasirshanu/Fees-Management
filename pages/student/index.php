@@ -146,7 +146,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="mob1">Primary Mobile Number:</label>
+                                                    <label for="mob1">Primary Contact Number:</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
@@ -158,7 +158,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="mob2">Secondary Mobile Number:</label>
+                                                    <label for="mob2">Secondary Contact Number:</label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
@@ -170,10 +170,20 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="address">Complete Address:</label>
-                                                    <textarea id="address" rows="3" class="form-control" style="resize: none;" placeholder="Enter Complete Address"></textarea>
-                                                    <!-- <input type="text" id="address" class="form-control" placeholder="Enter Complete Address"> -->
-                                                    <!-- /.input group -->
+                                                    <label for="add1">Address Line 1:</label>
+                                                    <input type="text" id="add1" class="form-control" placeholder="Enter Address Line 1">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="add2">Address Line 2:</label>
+                                                    <input type="text" id="add2" class="form-control" placeholder="Enter Address Line 2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="add3">Address Line 3:</label>
+                                                    <input type="text" id="add3" class="form-control" placeholder="Enter Address Line 3">
                                                 </div>
                                             </div>
                                         </div>
@@ -194,7 +204,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                     </div>
                                     <!-- /.card-body -->
                                     <div id="studentOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
@@ -281,7 +290,9 @@
                 $('#email').val('');
                 $('#mob1').val('');
                 $('#mob2').val('');
-                $('#address').val('');
+                $('#add1').val('');
+                $('#add2').val('');
+                $('#add3').val('');
                 $('#update').css('display', 'none');
                 $('#add').css('display', 'inline-block');
             }
@@ -321,7 +332,7 @@
                     }
                 })
             }
-            function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, address){
+            function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, add1, add2, add3){
                 clearu();
                 $('#add').css('display', 'none');
                 $('#update').css('display', 'block');
@@ -339,7 +350,9 @@
                 $('#email').val(email);
                 $('#mob1').val(mob1);
                 $('#mob2').val(mob2);
-                $('#address').val(address);
+                $('#add1').val(add1);
+                $('#add2').val(add2);
+                $('#add3').val(add3);
             }
             function update(){
                 var sid = $('#sid').val();
@@ -352,7 +365,9 @@
                 var email = $('#email').val();
                 var mob1 = $('#mob1').val().replace("_", "");
                 var mob2 = $('#mob2').val().replace("_", "");
-                var address = $('#address').val();
+                var add1 = $('#add1').val();
+                var add2 = $('#add2').val();
+                var add3 = $('#add3').val();
                 if(sid != '')
                 {
                     $('#studentOverlay').css('display', 'flex');
@@ -446,7 +461,7 @@
                         $.ajax({
                             type: 'POST',
                             url: '../../includes/ajax.php',
-                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'email':email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'updateStudent' },
+                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'email':email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'updateStudent' },
                             success: function(res){
                                 if(res == 0)
                                 {
@@ -580,7 +595,9 @@
                 var email = $('#email').val();
                 var mob1 = $('#mob1').val().replace("_", "");
                 var mob2 = $('#mob2').val().replace("_", "");
-                var address = $('#address').val();
+                var add1 = $('#add1').val();
+                var add2 = $('#add2').val();
+                var add3 = $('#add3').val();
                 $('#studentOverlay').css('display', 'flex');
                 $('#overlay').css('display', 'flex');
                 if(sname == '')
@@ -684,7 +701,7 @@
                     $.ajax({
                         type: 'POST',
                         url: '../../includes/ajax.php',
-                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'eyear': eyear, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'address': address, 'request': 'addStudent' },
+                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'eyear': eyear, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'addStudent' },
                         success: function(res){
                             if(res == 0)
                             {
@@ -823,7 +840,7 @@
                     }
                 })
             }
-            function showModal(sid, sname, fname, mname, dob, course, eyear, enroll, roll, email, mob1, mob2, address, added_by, added_time){
+            function showModal(sid, sname, fname, mname, dob, course, eyear, enroll, roll, email, mob1, mob2, add1, add2, add3, added_by, added_time){
                 $('#modal-head').html(sname);
                 $('#modal-sname').html(sname);
                 $('#modal-fname').html(fname);
@@ -836,7 +853,7 @@
                 $('#modal-email').html(email);
                 $('#modal-mob1').html(mob1);
                 $('#modal-mob2').html(mob2);
-                $('#modal-address').html(address);
+                $('#modal-address').html(add1 + " " + add2 + " " + add3);
                 $('#modal-added_by').html(added_by);
                 $('#modal-added_time').html(added_time);
                 $('#modal-receipt').attr('href', '../consolided-invoice/?id=' + sid);
