@@ -60,6 +60,12 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="../portal-settings" class="nav-link <?php if($page == "Portal Settings")echo "active"; ?>">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>Portal Settings</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
