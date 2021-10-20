@@ -1417,7 +1417,7 @@
                                                     $remark = $row['remark'];
                                                 }
                                             ?>
-                                            <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $remark; ?>')"></i> 
+                                            <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $remark; ?>')"></i>
                                             <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['invoice_content_id']; ?>', '<?php echo $row['head']; ?>', '<?php echo $row['dsc']; ?>', '<?php echo $row['amount']; ?>', '<?php echo $row['tax']; ?>', '<?php echo $row['subt']; ?>', '<?php echo $row['remark']; ?>', '<?php if($row['dsc'] == 'Tuition Fee'){ echo 1; }else{ echo 0; } ?>')"></i> 
                                             <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['invoice_content_id'] ?>')"></i>
                                         </td>
@@ -1533,6 +1533,68 @@
                     echo 5;
                 }
             }
+        }
+        else if($_POST['request'] == 'getAllInvoices')
+        {
+            ?>
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="example1" class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Invoice Number</th>
+                                <th>Invoice Date</th>
+                                <th>Added By</th>
+                                <th>Added Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $i = 1;
+                                $result = getresult('*', 'invoice', '', 'invoice_id > 0', 'invoice_id DESC', '', '');
+                                while($row = mysqli_fetch_array($result))
+                                {
+                                    ?>
+                                    <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><a href="../single-invoice/?id=<?php echo $row['invoice_id']; ?>" target="_blank"><?php echo $row['invoice_no']; ?></a></td>
+                                        <td><?php echo date('d M Y', $row['invoice_date']); ?></td>
+                                        <td>
+                                            <?php
+                                                $uid = $row['added_by'];
+                                                $fname = getvalue('fname', 'confidential', json_encode(['user_id' => $uid]), '');
+                                                $mname = getvalue('mname', 'confidential', json_encode(['user_id' => $uid]), '');
+                                                $lname = getvalue('lname', 'confidential', json_encode(['user_id' => $uid]), '');
+                                                echo $fname." ".$mname." ".$lname;
+                                            ?>
+                                        </td>
+                                        <td><?php echo date('d M Y h:i:s a', $row['added_time']); ?></td>
+                                        <td><a href="../single-invoice/?id=<?php echo $row['invoice_id']; ?>" target="_blank" style="color: black;"><i class="fas fa-eye" style="cursor: pointer;"></i></a></td>
+                                    </tr>
+                                    <?php
+                                    $i++;
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": true,
+                        "responsive": true
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
         }
     }
 ?>

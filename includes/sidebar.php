@@ -40,6 +40,12 @@
                         <p>Student Management</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="../invoices" class="nav-link <?php if($page == "Invoices")echo "active"; ?>">
+                        <i class="nav-icon fas fa-receipt"></i>
+                        <p>All Invoices</p>
+                    </a>
+                </li>
                 <li class="nav-item <?php if($page == 'User Type Management' || $page == 'User Management')echo "menu-open"; ?>">
                     <a href="#" class="nav-link <?php if($page == 'User Type Management' || $page == 'User Management')echo "active"; ?>">
                         <i class="nav-icon fas fa-user"></i>
