@@ -34,7 +34,7 @@
                         <p>All Invoices</p>
                     </a>
                 </li>
-                <li class="nav-item" <?php if($page == 'Student Management' || $page == 'Advanced Student Search')echo "menu-open"; ?>">
+                <li class="nav-item <?php if($page == 'Student Management' || $page == 'Advanced Student Search')echo "menu-open"; ?>">
                     <a href="#" class="nav-link <?php if($page == 'Student Management' || $page == 'Advanced Student Search')echo "active"; ?>">
                         <i class="nav-icon fas fa-user-graduate"></i>
                         <p>Student <i class="right fas fa-angle-left"></i></p>
