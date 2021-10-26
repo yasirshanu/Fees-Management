@@ -237,9 +237,9 @@
         <script src="../../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
         <!-- Select2 -->
         <script src="../../plugins/select2/js/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="../../plugins/moment/moment.min.js"></script>
-<script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
+        <!-- InputMask -->
+        <script src="../../plugins/moment/moment.min.js"></script>
+        <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
 
         <script>
             $(function () {

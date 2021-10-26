@@ -857,7 +857,7 @@
                 $('#modal-added_by').html(added_by);
                 $('#modal-added_time').html(added_time);
                 $('#modal-receipt').attr('href', '../consolided-invoice/?id=' + sid);
-                $('#student-modal').modal('show')
+                $('#student-modal').modal('show');
             }
         </script>
     </body>

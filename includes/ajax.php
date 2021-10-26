@@ -1596,5 +1596,365 @@
             </script>
             <?php
         }
+        else if($_POST['request'] == 'advstusearch')
+        {
+            $course = $_POST['course'];
+            $enroll = $_POST['enroll'];
+            $roll = $_POST['roll'];
+            $eyear = $_POST['eyear'];
+            $name = $_POST['name'];
+            $fname = $_POST['fname'];
+            $mname = $_POST['mname'];
+            $dob = $_POST['dob'];
+            $email = $_POST['email'];
+            $mob = $_POST['mob'];
+            if($course == '' && $enroll == '' && $roll == '' && $eyear == '' && $name == '' && $fname == '' && $mname == '' && $dob == '' && $email == '' && $mob == '')
+            {
+                ?>
+                <div class="card card-primary card-outline">
+                    <div class="card-header">Advanced Search Result</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Student Name</th>
+                                            <th>Father's Name</th>
+                                            <th>Date of Birth</th>
+                                            <th>Course</th>
+                                            <th>Enrollment Number</th>
+                                            <th>Roll Number</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $i = 1;
+                                            $result = getresult('*', 'student', '', 'student_id > 0', '', '', '');
+                                            while($row = mysqli_fetch_array($result))
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $row['student_name']; ?></td>
+                                                    <td><?php echo $row['f_name']; ?></td>
+                                                    <td><?php echo date("d M Y", $row['dob']); ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
+                                                    <td><?php echo $row['enroll']; ?></td>
+                                                    <td><?php echo $row['roll']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                            $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $middle = getvalue('mname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $added_by = $first." ".$middle." ".$last;
+                                                            $added_time = date("d M Y h:i:s A", $row['added_time']);
+                                                        ?>
+                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>')"></i> 
+                                                        <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="student-modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 id="modal-head" class="modal-title"></h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <tr>
+                                                <th>Student Name</th>
+                                                <td id="modal-sname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Father's Name</th>
+                                                <td id="modal-fname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Mother's Name</th>
+                                                <td id="modal-mname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Date of Birth</th>
+                                                <td id="modal-dob"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Course Enrolled</th>
+                                                <td id="modal-course"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrollment Year</th>
+                                                <td id="modal-eyear"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrollment Number</th>
+                                                <td id="modal-enroll"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Roll Number</th>
+                                                <td id="modal-roll"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td id="modal-email"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Primary Contact Number</th>
+                                                <td id="modal-mob1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Secondary Contact Number</th>
+                                                <td id="modal-mob2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Address</th>
+                                                <td id="modal-address"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrolled By</th>
+                                                <td id="modal-added_by"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrolled Time</th>
+                                                <td id="modal-added_time"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <a id="modal-receipt" href="" target="_blank"><button type="button" class="btn btn-primary">Payment Details</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                        <script>
+                            $(function () {
+                                $("#example1").DataTable({
+                                    "paging": true,
+                                    "lengthChange": true,
+                                    "searching": true,
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": true,
+                                    "responsive": true,
+                                    "buttons": ["pdf", "print"]
+                                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                            });
+                        </script>
+                    </div>
+                </div>
+                <?php
+            }
+            else
+            {
+                $i = 1;
+                $where = "";
+                if($course != "")
+                {
+                    $where .= "course='$course' AND ";
+                }
+                if($enroll != "")
+                {
+                    $where .= "enroll='$enroll' AND ";
+                }
+                if($roll != "")
+                {
+                    $where .= "roll='$roll' AND ";
+                }
+                if($eyear != "")
+                {
+                    $where .= "enroll_year='$eyear' AND ";
+                }
+                if($name != "")
+                {
+                    $where .= "student_name='$name' AND ";
+                }
+                if($fname != "")
+                {
+                    $where .= "f_name='$fname' AND ";
+                }
+                if($dob != "")
+                {
+                    $cdob = strtotime($dob);
+                    $where .= "dob='$cdob' AND ";
+                }
+                if($email != "")
+                {
+                    $where .= "student_email='$email' AND ";
+                }
+                if($mob != "")
+                {
+                    $where .= "(student_mob1='$mob' OR student_mob2='$mob') AND ";
+                }
+                $where = substr($where, 0, -5);
+                $result = getresult('*', 'student', '', $where, '', '', '');
+                ?>
+                <div class="card card-primary card-outline">
+                    <div class="card-header">Advanced Search Result</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="example1" class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Student Name</th>
+                                            <th>Father's Name</th>
+                                            <th>Date of Birth</th>
+                                            <th>Course</th>
+                                            <th>Enrollment Number</th>
+                                            <th>Roll Number</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            while($row = mysqli_fetch_array($result))
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $row['student_name']; ?></td>
+                                                    <td><?php echo $row['f_name']; ?></td>
+                                                    <td><?php echo date("d M Y", $row['dob']); ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
+                                                    <td><?php echo $row['enroll']; ?></td>
+                                                    <td><?php echo $row['roll']; ?></td>
+                                                    <td>
+                                                        <?php
+                                                            $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $middle = getvalue('mname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $last = getvalue('lname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
+                                                            $added_by = $first." ".$middle." ".$last;
+                                                            $added_time = date("d M Y h:i:s A", $row['added_time']);
+                                                        ?>
+                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>')"></i> 
+                                                        <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="student-modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 id="modal-head" class="modal-title"></h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table id="example1" class="table table-bordered table-striped">
+                                            <tr>
+                                                <th>Student Name</th>
+                                                <td id="modal-sname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Father's Name</th>
+                                                <td id="modal-fname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Mother's Name</th>
+                                                <td id="modal-mname"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Date of Birth</th>
+                                                <td id="modal-dob"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Course Enrolled</th>
+                                                <td id="modal-course"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrollment Year</th>
+                                                <td id="modal-eyear"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrollment Number</th>
+                                                <td id="modal-enroll"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Roll Number</th>
+                                                <td id="modal-roll"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Email</th>
+                                                <td id="modal-email"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Primary Contact Number</th>
+                                                <td id="modal-mob1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Secondary Contact Number</th>
+                                                <td id="modal-mob2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Address</th>
+                                                <td id="modal-address"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrolled By</th>
+                                                <td id="modal-added_by"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Enrolled Time</th>
+                                                <td id="modal-added_time"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                        <a id="modal-receipt" href="" target="_blank"><button type="button" class="btn btn-primary">Payment Details</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
+                        <!-- /.modal -->
+                        <script>
+                            $(function () {
+                                $("#example1").DataTable({
+                                    "paging": true,
+                                    "lengthChange": true,
+                                    "searching": true,
+                                    "ordering": true,
+                                    "info": true,
+                                    "autoWidth": true,
+                                    "responsive": true,
+                                    "buttons": ["pdf", "print"]
+                                }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                            });
+                        </script>
+                    </div>
+                </div>
+                <?php
+            }
+        }
     }
 ?>
