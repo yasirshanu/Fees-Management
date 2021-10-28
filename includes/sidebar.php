@@ -34,16 +34,22 @@
                         <p>All Invoices</p>
                     </a>
                 </li>
-                <li class="nav-item <?php if($page == 'Student Management' || $page == 'Advanced Student Search')echo "menu-open"; ?>">
-                    <a href="#" class="nav-link <?php if($page == 'Student Management' || $page == 'Advanced Student Search')echo "active"; ?>">
+                <li class="nav-item <?php if($page == 'Student Management' || $page == 'Advanced Student Search' || $page == 'Fees Status')echo "menu-open"; ?>">
+                    <a href="#" class="nav-link <?php if($page == 'Student Management' || $page == 'Advanced Student Search' || $page == 'Fees Status')echo "active"; ?>">
                         <i class="nav-icon fas fa-user-graduate"></i>
                         <p>Student <i class="right fas fa-angle-left"></i></p>
                     </a>
-                    <ul class="nav nav-treeview" <?php if($page != 'Student Management' && $page != 'Advanced Student Search'){ echo "style='display: none;'"; } ?>>
+                    <ul class="nav nav-treeview" <?php if($page != 'Student Management' && $page != 'Advanced Student Search' && $page != 'Fees Status'){ echo "style='display: none;'"; } ?>>
                         <li class="nav-item">
                             <a href="../student" class="nav-link <?php if($page == 'Student Management')echo "active"; ?>">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Student Management</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../fees-status" class="nav-link <?php if($page == 'Fees Status')echo "active"; ?>">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Fees Status</p>
                             </a>
                         </li>
                         <li class="nav-item">

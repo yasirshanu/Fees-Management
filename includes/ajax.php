@@ -1652,9 +1652,7 @@
                                                             $added_by = $first." ".$middle." ".$last;
                                                             $added_time = date("d M Y h:i:s A", $row['added_time']);
                                                         ?>
-                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
-                                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>')"></i> 
-                                                        <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
+                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -1846,8 +1844,6 @@
                                                             $added_time = date("d M Y h:i:s A", $row['added_time']);
                                                         ?>
                                                         <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
-                                                        <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('Y-m-d', $row['dob']); ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>')"></i> 
-                                                        <?php if(getrows('invoice_content', json_encode(['student_id' => $row['student_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['student_id'] ?>')"></i><?php } ?>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -1955,6 +1951,71 @@
                 </div>
                 <?php
             }
+        }
+        else if($_POST['request'] == 'pendingFees')
+        {
+            ?>
+            <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Total Tuition Fees</th>
+                        <th>Paid Tuition Fees</th>
+                        <th>Total Exam Fees</th>
+                        <th>Paid Exam Fees</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $result = getresult('*', 'student', '', 'student_id > 0', 'course', '', '');
+                    $i = 1;
+                    while($row = mysqli_fetch_array($result))
+                    {
+                        $sid = $row['student_id'];
+                        $tuition = $row['course'];
+                        $collected = 0;
+                        $result1 = getresult('*', 'invoice_content', json_encode(['student_id' => $sid, 'dsc' => 'Tuition Fee']), '', '', '', '');
+                        while($row1 = mysqli_fetch_array($result1))
+                        {
+                            $collected += $row1['amount'];
+                        }
+                        ?>
+                        <tr>
+                            <td><?php echo $i; ?></td>
+                            <td><?php echo $row['student_name']; ?></td>
+                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
+                            <td style="text-align: right;">₹<?php echo $row['course_fee']; ?></td>
+                            <td style="text-align: right;">₹<?php echo $collected; ?></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <?php
+                        $i++;
+                    }
+                    ?>
+                </tbody>
+            </table>
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": true,
+                        "ordering": false,
+                        "info": true,
+                        "autoWidth": true,
+                        "responsive": true,
+                        "buttons": ["pdf", "print"]
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
         }
     }
 ?>
