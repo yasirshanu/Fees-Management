@@ -107,15 +107,15 @@
                                         <h3>
                                             <?php
                                                 $amount = 0;
-                                                $result = getresult("*", "invoice_content", "", "invoice_content_id > 0", "", "", "");
+                                                $result = getresult("*", "invoice_content", json_encode(['dsc' => 'Tuition Fee']), "", "", "", "");
                                                 while($row = mysqli_fetch_array($result))
                                                 {
                                                     $amount += $row['subt'];
                                                 }
-                                                echo "₹".$amount;
+                                                echo "₹".number_format($amount);
                                             ?>
                                         </h3>
-                                        <p>Total Fees Collected</p>
+                                        <p>Total Tuition Fees Collected</p>
                                     </div>
                                     <div class="icon">
                                         <i class="fas fa-rupee-sign"></i>
@@ -134,7 +134,7 @@
                                                 while($row = mysqli_fetch_array($result))
                                                 {
                                                     $sid = $row['student_id'];
-                                                    $c_fee = $row['course_fee'];
+                                                    $c_fee = $row['course_tuition_fee'];
                                                     $amount = 0;
                                                     $result1 = getresult('*', 'invoice_content', json_encode(['student_id' => $sid, 'dsc' => 'Tuition Fee']), '', '', '', '');
                                                     while($row1 = mysqli_fetch_array($result1))
@@ -144,10 +144,88 @@
                                                     $bal = $c_fee - $amount;
                                                     $pending += $bal;
                                                 }
-                                                echo $pending;
+                                                echo "₹".number_format($pending);
                                             ?>
                                         </h3>
                                         <p>Pending Tuition Fees</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-rupee-sign"></i>
+                                    </div>
+                                    <a href="../invoices" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h3>
+                                            <?php
+                                                $amount = 0;
+                                                $result = getresult("*", "invoice_content", json_encode(['dsc' => 'Exam Fee (Regular)']), "", "", "", "");
+                                                while($row = mysqli_fetch_array($result))
+                                                {
+                                                    $amount += $row['subt'];
+                                                }
+                                                echo "₹".number_format($amount);
+                                            ?>
+                                        </h3>
+                                        <p>Total Exam Fees Collected</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-rupee-sign"></i>
+                                    </div>
+                                    <a href="../invoices" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3>
+                                            <?php
+                                                $pending = 0;
+                                                $result = getresult('*', 'student', '', 'student_id > 0', '', '', '');
+                                                while($row = mysqli_fetch_array($result))
+                                                {
+                                                    $sid = $row['student_id'];
+                                                    $c_fee = $row['course_exam_fee'];
+                                                    $amount = 0;
+                                                    $result1 = getresult('*', 'invoice_content', json_encode(['student_id' => $sid, 'dsc' => 'Exam Fee (Regular)']), '', '', '', '');
+                                                    while($row1 = mysqli_fetch_array($result1))
+                                                    {
+                                                        $amount += $row1['amount'];
+                                                    }
+                                                    $bal = $c_fee - $amount;
+                                                    $pending += $bal;
+                                                }
+                                                echo "₹".number_format($pending);
+                                            ?>
+                                        </h3>
+                                        <p>Pending Exam Fees</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-rupee-sign"></i>
+                                    </div>
+                                    <a href="../invoices" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-primary">
+                                    <div class="inner">
+                                        <h3>
+                                            <?php
+                                                $amount = 0;
+                                                $result = getresult("*", "invoice_content", "", "invoice_content_id > 0", "", "", "");
+                                                while($row = mysqli_fetch_array($result))
+                                                {
+                                                    $amount += $row['subt'];
+                                                }
+                                                echo "₹".number_format($amount);
+                                            ?>
+                                        </h3>
+                                        <p>Total Fees Collected</p>
                                     </div>
                                     <div class="icon">
                                         <i class="fas fa-rupee-sign"></i>

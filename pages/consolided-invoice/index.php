@@ -11,7 +11,8 @@
             $sname = $row['student_name'];
             $course = $row['course'];
             $cname = getvalue('course_name', 'course', json_encode(['course_id' => $course]), '');
-            $cfee = $row['course_fee'];
+            $cfee = $row['course_tuition_fee'];
+            $cexam = $row['course_exam_fee'];
             $ctype = $row['course_type'];
             $cperiod = $row['course_period'];
             $eyear = $row['enroll_year'];
@@ -120,7 +121,7 @@
                                                 <?php if($sadd1 != ''){ echo $sadd1."<br>"; } ?>
                                                 <?php if($sadd2 != ''){ echo $sadd2."<br>"; } ?>
                                                 <?php if($sadd3 != ''){ echo $sadd3."<br>"; } ?>
-                                                <?php if($smob1 != '' || $smob2 != ''){ echo "Contact No.: "; if($smob1 != '' && $smob2 == ''){ echo $smob1."<br>"; }else if($mob1 == '' && $mob2 != ''){ echo $smob2."<br>"; }else if($mob1 != '' && $mob != ''){ echo $mob1.", ".$mob2."<br>"; }} ?>
+                                                <?php if($smob1 != '' || $smob2 != ''){ echo "Contact No.: "; if($smob1 != '' && $smob2 == ''){ echo $smob1."<br>"; }else if($smob1 == '' && $smob2 != ''){ echo $smob2."<br>"; }else if($smob1 != '' && $smob2 != ''){ echo $smob1.", ".$smob2."<br>"; }} ?>
                                                 <?php if($semail != ''){ echo "Email: ".$semail; } ?>
                                             </address>
                                         </div>
@@ -157,6 +158,8 @@
                                                 <tbody>
                                                     <?php
                                                         $tot = 0;
+                                                        $tuition_fees = 0;
+                                                        $exam_fees = 0;
                                                         $result = getresult("*", "invoice_content", "", "student_id='$sid' AND (invoice_id!='' OR invoice_id IS NOT NULL)", "", "", "");
                                                         if(mysqli_num_rows($result) > 0)
                                                         {
@@ -214,7 +217,7 @@
                                                                             {
                                                                                 echo "Fee Concession";
                                                                             }
-                                                                            else if($h == 108)
+                                                                            else if($h == 200)
                                                                             {
                                                                                 echo "Other";
                                                                             }
@@ -265,7 +268,19 @@
                                                                             }
                                                                         ?>
                                                                     </td>
-                                                                    <td><?php echo $row['dsc']; ?></td>
+                                                                    <td>
+                                                                        <?php
+                                                                            if($row['dsc'] == 'Tuition Fee')
+                                                                            {
+                                                                                $tuition_fees += $row['amount'];
+                                                                            }
+                                                                            else if($row['dsc'] == 'Exam Fee (Regular)')
+                                                                            {
+                                                                                $exam_fees += $row['amount'];
+                                                                            }
+                                                                            echo $row['dsc'];
+                                                                        ?>
+                                                                    </td>
                                                                     <td style="text-align: right;">₹<?php echo sprintf('%.2f', $row['amount']); ?></td>
                                                                     <td style="text-align: right;"><?php echo $row['tax']; ?>%</td>
                                                                     <td style="text-align: right;">₹<?php echo sprintf('%.2f', $row['subt']); ?></td>
@@ -295,12 +310,50 @@
 
                                     <div class="row">
                                         <!-- /.col -->
-                                        <div class="offset-md-8 col-md-4">
+                                        <div class="col-md-3">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>Total Tuition Fees:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-primary">₹<?php echo sprintf('%.2f', $cfee); ?></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tuition Fees Paid:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-success">₹<?php echo sprintf('%.2f', $tuition_fees); ?></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Tuition Fees Due:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-danger">₹<?php echo sprintf('%.2f', $cfee - $tuition_fees); ?></span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="col-md-3">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>Total Exam Fees:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-primary">₹<?php echo sprintf('%.2f', $cexam); ?></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Exam Fees Paid:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-success">₹<?php echo sprintf('%.2f', $exam_fees); ?></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Exam Fees Due:</th>
+                                                        <td style="text-align: right;"><span class="badge bg-danger">₹<?php echo sprintf('%.2f', $cexam - $exam_fees); ?></span></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- /.col -->
+                                        <div class="offset-md-3 col-md-3">
                                             <div class="table-responsive">
                                                 <table class="table">
                                                     <tr>
                                                         <th>Total Amount Paid:</th>
-                                                        <td>₹<?php echo sprintf('%.2f', $tot); ?></td>
+                                                        <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tot); ?></td>
                                                     </tr>
                                                 </table>
                                             </div>

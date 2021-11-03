@@ -67,16 +67,16 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="cname">Course Name: <span class="text-danger">*</span></label>
                                                     <input type="text" id="cname" class="form-control" placeholder="Enter Course Name">
                                                     <input type="hidden" id="cid" class="form-control" value="">
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="cfee">Course Total Tuition Fees: <span class="text-danger">*</span></label>
+                                                    <label for="cfee">Total Tuition Fees: <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
@@ -85,7 +85,18 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="cexam">Total Regular Exam Fees: <span class="text-danger">*</span></label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-rupee-sign"></i></span>
+                                                        </div>
+                                                        <input id="cexam" class="form-control" data-inputmask="'alias': 'numeric', 'digits': 2, 'digitsOptional': false, 'placeholder': 'Enter Course Fee'" placeholder="Enter Course Fee" inputmode="decimal" value="0.00" data-mask>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="cp">Course Period: <span class="text-danger">*</span></label>
                                                     <select id="cp" class="form-control select2bs4" style="width: 100%;">
@@ -124,7 +135,6 @@
                                                 <button id="addbtn" class="btn btn-primary btn-block">Add Course</button>
                                             </div>
                                         </div>
-                                        <span><b><span class="text-danger">*Note: </span>This module is under updation.</b></span>
                                     </div>
                                     <!-- /.card-body -->
                                     <div id="cOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
@@ -138,7 +148,6 @@
                                     </div>
                                     <div id="cardbody" class="card-body" style="overflow: auto;"></div>
                                     <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
-                                    <span><b><span class="text-danger">*Note: </span>This module is under updation.</b></span>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -200,6 +209,7 @@
                 $('#cname').val('');
                 $('#cid').val('');
                 $('#cfee').val(0.00);
+                $('#cexam').val(0.00);
                 $('#cp').val('');
                 $('#cp').trigger('change');
                 $('#cremark').val('');
@@ -242,206 +252,233 @@
                     }
                 })
             }
-            // function setupdate(course_id, course_name, course_fee, cp, course_remark)
-            // {
-            //     $('#courseau').html('Update Course');
-            //     $('#cid').val(course_id);
-            //     $('#cname').val(course_name);
-            //     $('#cfee').val(course_fee);
-            //     $('#cp').val(cp);
-            //     $('#cp').trigger('change');
-            //     $('#cremark').val(course_remark);
-            //     $('#update').css('display', 'block');
-            //     $('#add').css('display', 'none');
-            // }
-            // function updatecourse(){
-            //     var Toast = Swal.mixin({
-            //         toast: true,
-            //         position: 'top-end',
-            //         showConfirmButton: false,
-            //         timer: 3000
-            //     });
-            //     var cid = $('#cid').val();
-            //     var cname = $('#cname').val();
-            //     var cfee = $('#cfee').val();
-            //     var cp = $('#cp').val();
-            //     var cremark = $('#cremark').val();
-            //     if(cname == '')
-            //     {
-            //         toastr.error('Please enter Course Name!');
-            //     }
-            //     else if(cname.length > 50)
-            //     {
-            //         toastr.warning('Course name cannot be larger than 50 characters!');
-            //     }
-            //     else if(cfee == '')
-            //     {
-            //         toastr.error('Please enter Course Fees!');
-            //     }
-            //     else
-            //     {
-            //         $('#cOverlay').css('display', 'flex');
-            //         $('#overlay').css('display', 'flex');
-            //         $.ajax({
-            //             type: "POST",
-            //             url: '../../includes/ajax.php',
-            //             data: { 'cid': cid, 'cfee': cfee, 'course': cname, 'cp': cp, 'cremark': cremark, 'request': 'updateCourse' },
-            //             success: function(res){
-            //                 if(res == 0)
-            //                 {
-            //                     Swal.fire('Error!', 'Invalid Course!', 'error');
-            //                     clearut();
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 1)
-            //                 {
-            //                     Swal.fire('Error!', 'Please enter Course name!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 2)
-            //                 {
-            //                     Swal.fire('Warning!', 'Course name cannot be larger than 50 characters!', 'warning');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 3)
-            //                 {
-            //                     Swal.fire('Error!', 'This Course already exist', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 4)
-            //                 {
-            //                     Swal.fire('Error!', 'This Course fee cannot be blank!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 5)
-            //                 {
-            //                     Swal.fire('Error!', 'This Course fee cannot be greater than 9999999!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 6)
-            //                 {
-            //                     Swal.fire('Error!', 'This Course period cannot be blank!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 7)
-            //                 {
-            //                     Swal.fire('Success', 'Course successfully updated...', 'success');
-            //                     clearut();
-            //                     showcontent();
-            //                     $('#cOverlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 8)
-            //                 {
-            //                     Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else
-            //                 {
-            //                     Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //             }
-            //         })
-            //     }
-            // }
-            // function addcourse(){
-            //     var Toast = Swal.mixin({
-            //         toast: true,
-            //         position: 'top-end',
-            //         showConfirmButton: false,
-            //         timer: 3000
-            //     });
-            //     var cname = $('#cname').val();
-            //     var cfee = $('#cfee').val();
-            //     var cp = $('#cp').val();
-            //     var cremark = $('#cremark').val();
-            //     if(cname == '')
-            //     {
-            //         toastr.error('Please enter Course Name!');
-            //     }
-            //     else if(cname.length > 50)
-            //     {
-            //         toastr.warning('Course name cannot be larger than 50 characters!');
-            //     }
-            //     else if(cfee == '')
-            //     {
-            //         toastr.error('Please enter Course Fees!');
-            //     }
-            //     else if(cp == '')
-            //     {
-            //         toastr.error('Please enter Course Period!');
-            //     }
-            //     else
-            //     {
-            //         $('#cOverlay').css('display', 'flex');
-            //         $('#overlay').css('display', 'flex');
-            //         $.ajax({
-            //             type: 'POST',
-            //             url: '../../includes/ajax.php',
-            //             data: { 'cname': cname, 'cfee': cfee, 'cremark': cremark, 'cp': cp, 'request': 'addCourse' },
-            //             success: function(res){
-            //                 if(res == 0)
-            //                 {
-            //                     Swal.fire('Error!', 'Please enter Course Name!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 1)
-            //                 {
-            //                     Swal.fire('Warning!', 'Course name cannot be larger than 50 characters!', 'warning');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 2)
-            //                 {
-            //                     Swal.fire('Error!', 'This Course already exist', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 3)
-            //                 {
-            //                     Swal.fire('Error!', 'Course fee cannot be blank!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 4)
-            //                 {
-            //                     Swal.fire('Error!', 'Course fee cannot be greater than ₹ 9999999!', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 5)
-            //                 {
-            //                     Swal.fire('Success', 'Course successfully added...', 'success');
-            //                     clearut();
-            //                     showcontent();
-            //                     $('#cOverlay').css('display', 'none');
-            //                 }
-            //                 else if(res == 6)
-            //                 {
-            //                     Swal.fire('Error!', 'Something went wrong', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //                 else
-            //                 {
-            //                     Swal.fire('Error!', 'Something went wrong', 'error');
-            //                     $('#cOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                 }
-            //             }
-            //         })
-            //     }
-            // }
+            function setupdate(course_id, course_name, course_fee, exam_fee, cp, course_remark)
+            {
+                $('#courseau').html('Update Course');
+                $('#cid').val(course_id);
+                $('#cname').val(course_name);
+                $('#cfee').val(course_fee);
+                $('#cexam').val(exam_fee);
+                $('#cp').val(cp);
+                $('#cp').trigger('change');
+                $('#cremark').val(course_remark);
+                $('#update').css('display', 'block');
+                $('#add').css('display', 'none');
+            }
+            function updatecourse(){
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                var cid = $('#cid').val();
+                var cname = $('#cname').val();
+                var cfee = $('#cfee').val();
+                var cexam = $('#cexam').val();
+                var cp = $('#cp').val();
+                var cremark = $('#cremark').val();
+                if(cname == '')
+                {
+                    toastr.error('Please enter Course Name!');
+                }
+                else if(cname.length > 50)
+                {
+                    toastr.warning('Course name cannot be larger than 50 characters!');
+                }
+                else if(cfee == '')
+                {
+                    toastr.error('Please enter Course Tuition Fees!');
+                }
+                else if(cexam == '')
+                {
+                    toastr.error('Please enter Course Exam Fees!');
+                }
+                else if(cfee > 9999999)
+                {
+                    toastr.error('Course Tuition Fees cannot be greater than 9999999!');
+                }
+                else if(cexam > 9999999)
+                {
+                    toastr.error('Course Exam Fees cannot be greater than 9999999!');
+                }
+                else
+                {
+                    $('#cOverlay').css('display', 'flex');
+                    $('#overlay').css('display', 'flex');
+                    $.ajax({
+                        type: "POST",
+                        url: '../../includes/ajax.php',
+                        data: { 'cid': cid, 'cfee': cfee, 'cexam': cexam, 'course': cname, 'cp': cp, 'cremark': cremark, 'request': 'updateCourse' },
+                        success: function(res){
+                            if(res == 0)
+                            {
+                                Swal.fire('Error!', 'Invalid Course!', 'error');
+                                clearut();
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 1)
+                            {
+                                Swal.fire('Error!', 'Please enter Course name!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 2)
+                            {
+                                Swal.fire('Warning!', 'Course name cannot be larger than 50 characters!', 'warning');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 3)
+                            {
+                                Swal.fire('Error!', 'This Course already exist', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 4)
+                            {
+                                Swal.fire('Error!', 'This Course fees cannot be blank!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 5)
+                            {
+                                Swal.fire('Error!', 'This Course fees cannot be greater than 9999999!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 6)
+                            {
+                                Swal.fire('Error!', 'This Course period cannot be blank!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 7)
+                            {
+                                Swal.fire('Success', 'Course successfully updated...', 'success');
+                                clearut();
+                                showcontent();
+                                $('#cOverlay').css('display', 'none');
+                            }
+                            else if(res == 8)
+                            {
+                                Swal.fire('Error!', 'Something went wrong!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else
+                            {
+                                Swal.fire('Error!', 'Something went wrong!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                        }
+                    })
+                }
+            }
+            function addcourse(){
+                var Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                var cname = $('#cname').val();
+                var cfee = $('#cfee').val();
+                var cexam = $('#cexam').val();
+                var cp = $('#cp').val();
+                var cremark = $('#cremark').val();
+                if(cname == '')
+                {
+                    toastr.error('Please enter Course Name!');
+                }
+                else if(cname.length > 50)
+                {
+                    toastr.warning('Course name cannot be larger than 50 characters!');
+                }
+                else if(cfee == '')
+                {
+                    toastr.error('Please enter Course Tuition Fees!');
+                }
+                else if(cexam == '')
+                {
+                    toastr.error('Please enter Course Exam Fees!');
+                }
+                else if(cfee > 9999999)
+                {
+                    toastr.error('Course Tuition Fees cannot be greater than 9999999!');
+                }
+                else if(cexam > 9999999)
+                {
+                    toastr.error('Course Exam Fees cannot be greater than 9999999!');
+                }
+                else if(cp == '')
+                {
+                    toastr.error('Please enter Course Period!');
+                }
+                else
+                {
+                    $('#cOverlay').css('display', 'flex');
+                    $('#overlay').css('display', 'flex');
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../includes/ajax.php',
+                        data: { 'cname': cname, 'cfee': cfee, 'cexam': cexam, 'cremark': cremark, 'cp': cp, 'request': 'addCourse' },
+                        success: function(res){
+                            if(res == 0)
+                            {
+                                Swal.fire('Error!', 'Please enter Course Name!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 1)
+                            {
+                                Swal.fire('Warning!', 'Course name cannot be larger than 50 characters!', 'warning');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 2)
+                            {
+                                Swal.fire('Error!', 'This Course already exist', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 3)
+                            {
+                                Swal.fire('Error!', 'Course fees cannot be blank!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 4)
+                            {
+                                Swal.fire('Error!', 'Course fees cannot be greater than ₹9999999!', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else if(res == 5)
+                            {
+                                Swal.fire('Success', 'Course successfully added...', 'success');
+                                clearut();
+                                showcontent();
+                                $('#cOverlay').css('display', 'none');
+                            }
+                            else if(res == 6)
+                            {
+                                Swal.fire('Error!', 'Something went wrong', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                            else
+                            {
+                                Swal.fire('Error!', 'Something went wrong', 'error');
+                                $('#cOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                            }
+                        }
+                    })
+                }
+            }
             function showcontent()
             {
                 $.ajax({
@@ -453,6 +490,11 @@
                         $('#overlay').css('display', 'none');
                     }
                 })
+            }
+            function showModal(cname, remark){
+                $('#modal-head').html(cname);
+                $('#modal-remark').html(remark);
+                $('#course-modal').modal('show');
             }
         </script>
     </body>

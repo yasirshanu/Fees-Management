@@ -8,7 +8,8 @@
         {
             $result = getresult('*', 'student', json_encode(['student_id' => $sid]), '', '', '', '');
             $row = mysqli_fetch_array($result);
-            $cfee = $row['course_fee'];
+            $cfee = $row['course_tuition_fee'];
+            $cexam = $row['course_exam_fee'];
             $ctype = $row['course_type'];
             $cperiod = $row['course_period'];
         }
@@ -118,13 +119,13 @@
                                                         <option value="105">Training & Placement</option>
                                                         <option value="106">Late Fee</option>
                                                         <option value="107">Fee Concession</option>
-                                                        <option value="108">Other</option>
+                                                        <option value="200">Other</option>
                                                     </select>
                                                     <input type="hidden" id="icid" value="">
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
-                                                <div class="form-group">
+                                                <div id="innerdesc" class="form-group">
                                                     <label for="idesc">Description: <span class="text-danger">*</span></label>
                                                     <select id="idesc" class="form-control" disabled>
                                                         <option value="" selected disabled>--Select Description--</option>
@@ -259,7 +260,7 @@
             document.getElementById("ihead").addEventListener("change", ihead);
             document.getElementById("amount").addEventListener("keyup", subt);
             document.getElementById("itax").addEventListener("change", subt);
-            document.getElementById("idesc").addEventListener("change", amo);
+            // document.getElementById("idesc").addEventListener("change", amo);
             document.getElementById("clear").addEventListener("click", clearu);
             document.getElementById("addbtn").addEventListener("click", addpay);
             document.getElementById("updatebtn").addEventListener("click", update);
@@ -269,6 +270,7 @@
                 $('#ino').val('');
                 $('#idesc').html('<option value="" selected disabled>--Select Description--</option>');
                 $('#ihead').val('');
+                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" disabled><option value="" selected disabled>--Select Description--</option></select>');
                 $('#idesc').attr('disabled', 'disabled');
                 $('#amount').removeAttr('disabled');
                 $('#amount').val('0.00');
@@ -358,11 +360,18 @@
             }
             function amo(){
                 var cfee = <?php echo $cfee; ?>;
+                var cexam = <?php echo $cexam; ?>;
                 var cp = <?php echo $cperiod; ?>;
                 var syfee = (cfee/cp).toFixed(2);
+                var syexam = (cexam/cp).toFixed(2);
                 var idesc = $('#idesc').val();
                 if(idesc == 'Tuition Fee'){
                     $('#amount').val(syfee);
+                    $('#amount').attr('disabled', 'disabled');
+                }
+                else if(idesc == 'Exam Fee (Regular)')
+                {
+                    $('#amount').val(syexam);
                     $('#amount').attr('disabled', 'disabled');
                 }
                 else{
@@ -389,24 +398,29 @@
                         data: { 'ihead': ihead, 'sid': sid, 'request': 'headStatus' },
                         success: function(res){
                             if(res == 0){
-                                $('#idesc').html('<option value="" selected disabled>--Select Description--</option>');
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" onchange="amo()" disabled><option value="" selected disabled>--Select Description--</option></select>');
                                 $('#ihead').val('');
                                 $('#idesc').attr('disabled', 'disabled');
                             }
                             else if(res == 1){
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" onchange="amo()" disabled><option value="" selected disabled>--Select Description--</option></select>');
                                 $('#idesc').html('<option value="" disabled>--Select Description--</option><option value="NA" selected>NA</option>');
                                 $('#idesc').attr('disabled', 'disabled');
                             }
                             else if(res == 2){
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><input type="text" id="idesc" class="form-control" placeholder="Enter Description...">');
+                            }
+                            else if(res == 3){
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" onchange="amo()" disabled><option value="" selected disabled>--Select Description--</option></select>');
                                 $('#idesc').html('<option value="" selected disabled>--Select Description--</option><option value="Tuition Fee">Tuition Fee</option><option value="Exam Fee (Regular)">Exam Fee (Regular)</option><option value="Exam Fee (Backlog)">Exam Fee (Backlog)</option>');
                                 $('#idesc').removeAttr('disabled');
                             }
-                            else if(res == 3){
-                                $('#idesc').html('<option value="" selected disabled>--Select Description--</option>');
+                            else if(res == 4){
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" onchange="amo()" disabled><option value="" selected disabled>--Select Description--</option></select>');
                                 $('#idesc').attr('disabled', 'disabled');
                             }
-                            else if(res == 4){
-                                $('#idesc').html('<option value="" selected disabled>--Select Description--</option>');
+                            else if(res == 5){
+                                $('#innerdesc').html('<label for="idesc">Description: <span class="text-danger">*</span></label><select id="idesc" class="form-control" onchange="amo()" disabled><option value="" selected disabled>--Select Description--</option></select>');
                                 $('#idesc').attr('disabled', 'disabled');
                             }
                             amo();
@@ -686,7 +700,8 @@
                     }
                 })
             }
-            function showModal(remark){
+            function showModal(desc, remark){
+                $('#modal-head').html(desc);
                 $('#modal-remark').html(remark);
                 $('#student-modal').modal('show')
             }

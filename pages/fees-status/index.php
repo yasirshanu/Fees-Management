@@ -64,11 +64,11 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
                                                     <label for="course">Course:</label>
-                                                    <select id="course" class="form-control select2bs4" style="width: 100%;">
-                                                        <option value="">--Any Course--</option>
+                                                    <select id="course" class="form-control">
+                                                        <option value="">--Any--</option>
                                                         <?php
                                                             $result = getresult('*', 'course', '', 'course_id > 0', '', '', '');
                                                             while($row = mysqli_fetch_array($result))
@@ -81,15 +81,51 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <div class="form-group">
-                                                    <label for="cp">Course Period:</label>
-                                                    <select id="cp" class="form-control select2bs4" style="width: 100%;">
-                                                        <option value="">--Any Course Period--</option>
+                                                    <label for="eyear">Enroll Year:</label>
+                                                    <select id="eyear" class="form-control select2bs4" style="width: 100%;">
+                                                        <option value="">--Any--</option>
+                                                        <?php
+                                                            for($y = date('Y', time()); $y >= 2010; $y--)
+                                                            {
+                                                                ?>
+                                                                <option value="<?php echo $y; ?>"><?php echo $y; ?></option>
+                                                                <?php
+                                                            }
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="offset-md-2 col-md-2" style="align-self: end">
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="ps">Payment Status:</label>
+                                                    <select id="ps" class="form-control">
+                                                        <option value="">--All--</option>
+                                                        <option value="0">Due</option>
+                                                        <option value="1">Paid</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="ft">Fees Type:</label>
+                                                    <select id="ft" class="form-control" disabled>
+                                                        <option value="">--All--</option>
+                                                        <option value="0">Tuition Fee</option>
+                                                        <option value="1">Exam Fee</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label for="cp">Year/Semester:</label>
+                                                    <select id="cp" class="form-control" disabled>
+                                                        <option value="">--All--</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="offset-md-8 col-md-2" style="align-self: end">
                                                 <div class="form-group">
                                                     <button id="cleara" class="btn btn-danger btn-block">Clear</button>
                                                 </div>
@@ -102,7 +138,6 @@
                                         </div>
                                     </div>
                                     <div id="soverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
-                                    <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +149,6 @@
                                     </div>
                                     <div id="cardbody" class="card-body" style="overflow: auto;"></div>
                                     <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
-                                    <span><b><span class="text-danger">*Note: </span>This module is under development.</b></span>
                                 </div>
                             </div>
                         </div>
@@ -143,13 +177,93 @@
         <script src="../../plugins/select2/js/select2.full.min.js"></script>
 
         <script>
+            document.getElementById("course").addEventListener("change", cp);
+            document.getElementById("ps").addEventListener("change", checkf);
+            document.getElementById("cleara").addEventListener("click", uclear);
+            document.getElementById("search").addEventListener("click", ssearch);
+
             $(function () {
                 //Initialize Select2 Elements
                 $('.select2bs4').select2({
                     theme: 'bootstrap4'
                 })
             })
-            // document.getElementById("clear").addEventListener("click", clearut);
+
+            function uclear(){
+                $('#soverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                $('#course').val('');
+                $('#cp').html('<option>--All--</option>');
+                $('#eyear').val('');
+                $('#eyear').trigger('change');
+                $('#ft').val('');
+                $('#ps').val('');
+                showcontent();
+                checkf();
+                $('#soverlay').css('display', 'none');
+            }
+
+            function cp(){
+                var course = $('#course').val();
+                $('#soverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                if(cp == '')
+                {
+                    $('#cp').html('<option>--All--</option>');
+                }
+                else
+                {
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../includes/ajax.php',
+                        data: { 'course': course, 'request': 'statusGetCp' },
+                        success: function(res){
+                            $('#cp').html(res);
+                            $('#soverlay').css('display', 'none');
+                            $('#overlay').css('display', 'none');
+                            checkf();
+                        }
+                    })
+                }
+            }
+
+            function checkf(){
+                var ps = $('#ps').val();
+                var course = $('#course').val();
+                if(ps == ''){
+                    $('#ft').val('');
+                    $('#ft').attr('disabled', 'disabled');
+                }
+                else{
+                    $('#ft').removeAttr('disabled');
+                }
+                if(ps != '' && course != ''){
+                    $('#cp').removeAttr('disabled');
+                }
+                else{
+                    $('#cp').attr('disabled', 'disabled');
+                }
+            }
+
+            function ssearch(){
+                var course = $('#course').val();
+                var cp = $('#cp').val();
+                var eyear = $('#eyear').val();
+                var ft = $('#ft').val();
+                var ps = $('#ps').val();
+                $('#soverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'course': course, 'period': cp, 'eyear': eyear, 'ft': ft, 'ps': ps, 'request': 'searchPStatus' },
+                    success: function(res){
+                        $('#soverlay').css('display', 'none');
+                        $('#cardbody').html(res);
+                        $('#overlay').css('display', 'none');
+                    }
+                })
+            }
 
             function showcontent(){
                 $.ajax({
@@ -159,6 +273,22 @@
                     success: function(res){
                         $('#cardbody').html(res);
                         $('#overlay').css('display', 'none');
+                    }
+                })
+            }
+
+            function showModal(sid, sname){
+                $('#moverlay').attr('style', 'display: flex !important;');
+                $.ajax({
+                    type: 'post',
+                    url: '../../includes/ajax.php',
+                    data: { 'sid': sid, 'request': 'statusModal' },
+                    success: function(res){
+                        $('#modal-head').html(sname);
+                        $('#modal-receipt').attr('href', '../consolided-invoice/?id=' + sid);
+                        $('#status-modal').modal('show');
+                        $('#modal-content').html(res);
+                        $('#moverlay').attr('style', 'display: none !important;');
                     }
                 })
             }

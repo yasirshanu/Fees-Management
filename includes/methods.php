@@ -83,6 +83,21 @@
                 return '';
             }
         }
+        else
+        {
+            $condition = $custom;
+            $sql = "SELECT $field FROM $table WHERE $condition";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) == 1)
+            {
+                $row = mysqli_fetch_array($result);
+                return $row[$field];
+            }
+            else
+            {
+                return '';
+            }
+        }
     }
     function getresult($fields, $table, $condi, $custom, $order, $group, $lim)
     {

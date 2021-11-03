@@ -204,7 +204,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <span><b><span class="text-danger">*Note: </span>This module is under updation.</b></span>
                                     </div>
                                     <!-- /.card-body -->
                                     <div id="studentOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
@@ -218,7 +217,6 @@
                                     </div>
                                     <div id="cardbody" class="card-body" style="overflow: auto;"></div>
                                     <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
-                                    <span><b><span class="text-danger">*Note: </span>This module is under updation.</b></span>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -334,502 +332,502 @@
                     }
                 })
             }
-            // function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, add1, add2, add3){
-            //     clearu();
-            //     $('#add').css('display', 'none');
-            //     $('#update').css('display', 'block');
-            //     $('#studentau').html('Edit Student Enrollment');
-            //     $('#sid').val(sid);
-            //     $('#sname').val(sname);
-            //     $('#fname').val(fname);
-            //     $('#mname').val(mname);
-            //     $('#dob').val(dob);
-            //     $('#course').attr('disabled', 'disabled');
-            //     $('#eyear').val('');
-            //     $('#eyear').attr('disabled', 'disabled');
-            //     $('#enroll').val(enroll);
-            //     $('#roll').val(roll);
-            //     $('#email').val(email);
-            //     $('#mob1').val(mob1);
-            //     $('#mob2').val(mob2);
-            //     $('#add1').val(add1);
-            //     $('#add2').val(add2);
-            //     $('#add3').val(add3);
-            // }
-            // function update(){
-            //     var sid = $('#sid').val();
-            //     var sname = $('#sname').val();
-            //     var fname = $('#fname').val();
-            //     var mname = $('#mname').val();
-            //     var dob = $('#dob').val();
-            //     var enroll = $('#enroll').val();
-            //     var roll = $('#roll').val();
-            //     var email = $('#email').val();
-            //     var mob1 = $('#mob1').val().replace("_", "");
-            //     var mob2 = $('#mob2').val().replace("_", "");
-            //     var add1 = $('#add1').val();
-            //     var add2 = $('#add2').val();
-            //     var add3 = $('#add3').val();
-            //     if(sid != '')
-            //     {
-            //         $('#studentOverlay').css('display', 'flex');
-            //         $('#overlay').css('display', 'flex');
-            //         if(sname == '')
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Please enter student name!');
-            //         }
-            //         else if(sname.length > 50)
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Student name cannot be more than 50 characters!');
-            //         }
-            //         else if(fname == '')
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error("Please enter Father's name!");
-            //         }
-            //         else if(fname.length > 50)
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error("Father's name cannot be more than 50 characters!");
-            //         }
-            //         else if(mname == '')
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error("Please enter Mother's name!");
-            //         }
-            //         else if(mname.length > 50)
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error("Mother's name cannot be more than 50 characters!");
-            //         }
-            //         else if(dob == '')
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Please enter Date of Birth!');
-            //         }
-            //         else if(enroll.length > 30)
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Enrollment number cannot be more than 50 characters!');
-            //         }
-            //         else if(roll.length > 30)
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Roll number cannot be more than 50 characters!');
-            //         }
-            //         else if((email != '') && (email.length < 5))
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Email must have atleast 5 characters!');
-            //         }
-            //         else if((email != '') && (email.length > 50))
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Email must not have more than 50 characters!');
-            //         }
-            //         else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Invaild Email!');
-            //         }
-            //         else if((mob1 != '') && (mob1.length != 10))
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Invaild Primary Mobile number!');
-            //         }
-            //         else if((mob2 != '') && (mob2.length != 10))
-            //         {
-            //             $('#studentOverlay').css('display', 'none');
-            //             $('#overlay').css('display', 'none');
-            //             toastr.error('Invaild Secondary Mobile number!');
-            //         }
-            //         else
-            //         {
-            //             $.ajax({
-            //                 type: 'POST',
-            //                 url: '../../includes/ajax.php',
-            //                 data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'email':email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'updateStudent' },
-            //                 success: function(res){
-            //                     if(res == 0)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Invalid Student!', 'error');
-            //                     }
-            //                     else if(res == 1)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Please enter Student name!', 'error');
-            //                     }
-            //                     else if(res == 2)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Student name cannot have more than 50 characters!', 'error');
-            //                     }
-            //                     else if(res == 3)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', "Please enter Father's name!", 'error');
-            //                     }
-            //                     else if(res == 4)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', "Father's name cannot have more than 50 characters!", 'error');
-            //                     }
-            //                     else if(res == 5)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', "Please enter Mother's name!", 'error');
-            //                     }
-            //                     else if(res == 6)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', "Mother's name cannot have more than 50 characters!", 'error');
-            //                     }
-            //                     else if(res == 7)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Invalid Date of Birth!', 'error');
-            //                     }
-            //                     else if(res == 8)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
-            //                     }
-            //                     else if(res == 9)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'This Roll number already exist!', 'error');
-            //                     }
-            //                     else if(res == 10)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
-            //                     }
-            //                     else if(res == 11)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
-            //                     }
-            //                     else if(res == 12)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Invalid Email!', 'error');
-            //                     }
-            //                     else if(res == 13)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
-            //                     }
-            //                     else if(res == 14)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
-            //                     }
-            //                     else if(res == 15)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         clearu();
-            //                         showcontent();
-            //                         Swal.fire('success!', 'User updated successfully!', 'success');
-            //                     }
-            //                     else if(res == 16)
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                     }
-            //                     else
-            //                     {
-            //                         $('#studentOverlay').css('display', 'none');
-            //                         $('#overlay').css('display', 'none');
-            //                         Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                     }
-            //                 }
-            //             })
-            //         }
-            //     }
-            //     else
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         Swal.fire('Error!', 'Something went wrong!', 'error');
-            //     }
-            // }
-            // function addstudent(){
-            //     var sname = $('#sname').val();
-            //     var fname = $('#fname').val();
-            //     var mname = $('#mname').val();
-            //     var dob = $('#dob').val();
-            //     var course = $('#course').val();
-            //     var eyear = $('#eyear').val();
-            //     var enroll = $('#enroll').val();
-            //     var roll = $('#roll').val();
-            //     var email = $('#email').val();
-            //     var mob1 = $('#mob1').val().replace("_", "");
-            //     var mob2 = $('#mob2').val().replace("_", "");
-            //     var add1 = $('#add1').val();
-            //     var add2 = $('#add2').val();
-            //     var add3 = $('#add3').val();
-            //     $('#studentOverlay').css('display', 'flex');
-            //     $('#overlay').css('display', 'flex');
-            //     if(sname == '')
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Please enter student name!');
-            //     }
-            //     else if(sname.length > 50)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Student name cannot be more than 50 characters!');
-            //     }
-            //     else if(fname == '')
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error("Please enter Father's name!");
-            //     }
-            //     else if(fname.length > 50)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error("Father's name cannot be more than 50 characters!");
-            //     }
-            //     else if(mname == '')
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error("Please enter Mother's name!");
-            //     }
-            //     else if(mname.length > 50)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error("Mother's name cannot be more than 50 characters!");
-            //     }
-            //     else if(dob == '')
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Please enter Date of Birth!');
-            //     }
-            //     else if(course == '')
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Please select course!');
-            //     }
-            //     else if(eyear == '' || eyear < 2010)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Please select Enrollment Year!');
-            //     }
-            //     else if(enroll.length > 30)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Enrollment number cannot be more than 50 characters!');
-            //     }
-            //     else if(roll.length > 30)
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Roll number cannot be more than 50 characters!');
-            //     }
-            //     else if((email != '') && (email.length < 5))
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Email must have atleast 5 characters!');
-            //     }
-            //     else if((email != '') && (email.length > 50))
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Email must not have more than 50 characters!');
-            //     }
-            //     else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Invaild Email!');
-            //     }
-            //     else if((mob1 != '') && (mob1.length != 10))
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Invaild Primary Mobile number!');
-            //     }
-            //     else if((mob2 != '') && (mob2.length != 10))
-            //     {
-            //         $('#studentOverlay').css('display', 'none');
-            //         $('#overlay').css('display', 'none');
-            //         toastr.error('Invaild Secondary Mobile number!');
-            //     }
-            //     else
-            //     {
-            //         $.ajax({
-            //             type: 'POST',
-            //             url: '../../includes/ajax.php',
-            //             data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'eyear': eyear, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'addStudent' },
-            //             success: function(res){
-            //                 if(res == 0)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Please enter Student name!', 'error');
-            //                 }
-            //                 else if(res == 1)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Student name cannot have more than 50 characters!', 'error');
-            //                 }
-            //                 else if(res == 2)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', "Please enter Father's name!", 'error');
-            //                 }
-            //                 else if(res == 3)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', "Father's name cannot have more than 50 characters!", 'error');
-            //                 }
-            //                 else if(res == 4)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', "Please enter Mother's name!", 'error');
-            //                 }
-            //                 else if(res == 5)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', "Mother's Name cannot have more than 50 characters!", 'error');
-            //                 }
-            //                 else if(res == 6)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Date of Birth!', 'error');
-            //                 }
-            //                 else if(res == 7)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Please select Course!', 'error');
-            //                 }
-            //                 else if(res == 8)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Course!', 'error');
-            //                 }
-            //                 else if(res == 9 || res == 10 || res == 11)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Enrollment Year!', 'error');
-            //                 }
-            //                 else if(res == 12)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
-            //                 }
-            //                 else if(res == 13)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'This Roll number already exist!', 'error');
-            //                 }
-            //                 else if(res == 14)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
-            //                 }
-            //                 else if(res == 15)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
-            //                 }
-            //                 else if(res == 16)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Email!', 'error');
-            //                 }
-            //                 else if(res == 17)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
-            //                 }
-            //                 else if(res == 18)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
-            //                 }
-            //                 else if(res == 19)
-            //                 {
-            //                     showcontent();
-            //                     clearu();
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     Swal.fire('Success!', 'Student enrolled successfully!', 'success');
-            //                 }
-            //                 else if(res == 20)
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                 }
-            //                 else
-            //                 {
-            //                     $('#studentOverlay').css('display', 'none');
-            //                     $('#overlay').css('display', 'none');
-            //                     Swal.fire('Error!', 'Something went wrong!', 'error');
-            //                 }
-            //             }
-            //         })
-            //     }
-            // }
+            function setupdate(sid, sname, fname, mname, dob, enroll, roll, email, mob1, mob2, add1, add2, add3){
+                clearu();
+                $('#add').css('display', 'none');
+                $('#update').css('display', 'block');
+                $('#studentau').html('Edit Student Enrollment');
+                $('#sid').val(sid);
+                $('#sname').val(sname);
+                $('#fname').val(fname);
+                $('#mname').val(mname);
+                $('#dob').val(dob);
+                $('#course').attr('disabled', 'disabled');
+                $('#eyear').val('');
+                $('#eyear').attr('disabled', 'disabled');
+                $('#enroll').val(enroll);
+                $('#roll').val(roll);
+                $('#email').val(email);
+                $('#mob1').val(mob1);
+                $('#mob2').val(mob2);
+                $('#add1').val(add1);
+                $('#add2').val(add2);
+                $('#add3').val(add3);
+            }
+            function update(){
+                var sid = $('#sid').val();
+                var sname = $('#sname').val();
+                var fname = $('#fname').val();
+                var mname = $('#mname').val();
+                var dob = $('#dob').val();
+                var enroll = $('#enroll').val();
+                var roll = $('#roll').val();
+                var email = $('#email').val();
+                var mob1 = $('#mob1').val().replace("_", "");
+                var mob2 = $('#mob2').val().replace("_", "");
+                var add1 = $('#add1').val();
+                var add2 = $('#add2').val();
+                var add3 = $('#add3').val();
+                if(sid != '')
+                {
+                    $('#studentOverlay').css('display', 'flex');
+                    $('#overlay').css('display', 'flex');
+                    if(sname == '')
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Please enter student name!');
+                    }
+                    else if(sname.length > 50)
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Student name cannot be more than 50 characters!');
+                    }
+                    else if(fname == '')
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error("Please enter Father's name!");
+                    }
+                    else if(fname.length > 50)
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error("Father's name cannot be more than 50 characters!");
+                    }
+                    else if(mname == '')
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error("Please enter Mother's name!");
+                    }
+                    else if(mname.length > 50)
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error("Mother's name cannot be more than 50 characters!");
+                    }
+                    else if(dob == '')
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Please enter Date of Birth!');
+                    }
+                    else if(enroll.length > 30)
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Enrollment number cannot be more than 50 characters!');
+                    }
+                    else if(roll.length > 30)
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Roll number cannot be more than 50 characters!');
+                    }
+                    else if((email != '') && (email.length < 5))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Email must have atleast 5 characters!');
+                    }
+                    else if((email != '') && (email.length > 50))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Email must not have more than 50 characters!');
+                    }
+                    else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Email!');
+                    }
+                    else if((mob1 != '') && (mob1.length != 10))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Primary Mobile number!');
+                    }
+                    else if((mob2 != '') && (mob2.length != 10))
+                    {
+                        $('#studentOverlay').css('display', 'none');
+                        $('#overlay').css('display', 'none');
+                        toastr.error('Invaild Secondary Mobile number!');
+                    }
+                    else
+                    {
+                        $.ajax({
+                            type: 'POST',
+                            url: '../../includes/ajax.php',
+                            data: { 'sid': sid, 'sname': sname,'fname': fname, 'mname': mname, 'dob': dob, 'enroll': enroll, 'roll': roll, 'email':email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'updateStudent' },
+                            success: function(res){
+                                if(res == 0)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Student!', 'error');
+                                }
+                                else if(res == 1)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Please enter Student name!', 'error');
+                                }
+                                else if(res == 2)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Student name cannot have more than 50 characters!', 'error');
+                                }
+                                else if(res == 3)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', "Please enter Father's name!", 'error');
+                                }
+                                else if(res == 4)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', "Father's name cannot have more than 50 characters!", 'error');
+                                }
+                                else if(res == 5)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', "Please enter Mother's name!", 'error');
+                                }
+                                else if(res == 6)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', "Mother's name cannot have more than 50 characters!", 'error');
+                                }
+                                else if(res == 7)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Date of Birth!', 'error');
+                                }
+                                else if(res == 8)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
+                                }
+                                else if(res == 9)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'This Roll number already exist!', 'error');
+                                }
+                                else if(res == 10)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
+                                }
+                                else if(res == 11)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
+                                }
+                                else if(res == 12)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Email!', 'error');
+                                }
+                                else if(res == 13)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                                }
+                                else if(res == 14)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                                }
+                                else if(res == 15)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    clearu();
+                                    showcontent();
+                                    Swal.fire('success!', 'User updated successfully!', 'success');
+                                }
+                                else if(res == 16)
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Something went wrong!', 'error');
+                                }
+                                else
+                                {
+                                    $('#studentOverlay').css('display', 'none');
+                                    $('#overlay').css('display', 'none');
+                                    Swal.fire('Error!', 'Something went wrong!', 'error');
+                                }
+                            }
+                        })
+                    }
+                }
+                else
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    Swal.fire('Error!', 'Something went wrong!', 'error');
+                }
+            }
+            function addstudent(){
+                var sname = $('#sname').val();
+                var fname = $('#fname').val();
+                var mname = $('#mname').val();
+                var dob = $('#dob').val();
+                var course = $('#course').val();
+                var eyear = $('#eyear').val();
+                var enroll = $('#enroll').val();
+                var roll = $('#roll').val();
+                var email = $('#email').val();
+                var mob1 = $('#mob1').val().replace("_", "");
+                var mob2 = $('#mob2').val().replace("_", "");
+                var add1 = $('#add1').val();
+                var add2 = $('#add2').val();
+                var add3 = $('#add3').val();
+                $('#studentOverlay').css('display', 'flex');
+                $('#overlay').css('display', 'flex');
+                if(sname == '')
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Please enter student name!');
+                }
+                else if(sname.length > 50)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Student name cannot be more than 50 characters!');
+                }
+                else if(fname == '')
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error("Please enter Father's name!");
+                }
+                else if(fname.length > 50)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error("Father's name cannot be more than 50 characters!");
+                }
+                else if(mname == '')
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error("Please enter Mother's name!");
+                }
+                else if(mname.length > 50)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error("Mother's name cannot be more than 50 characters!");
+                }
+                else if(dob == '')
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Please enter Date of Birth!');
+                }
+                else if(course == '')
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Please select course!');
+                }
+                else if(eyear == '' || eyear < 2010)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Please select Enrollment Year!');
+                }
+                else if(enroll.length > 30)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Enrollment number cannot be more than 50 characters!');
+                }
+                else if(roll.length > 30)
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Roll number cannot be more than 50 characters!');
+                }
+                else if((email != '') && (email.length < 5))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Email must have atleast 5 characters!');
+                }
+                else if((email != '') && (email.length > 50))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Email must not have more than 50 characters!');
+                }
+                else if((email != '') && (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Email!');
+                }
+                else if((mob1 != '') && (mob1.length != 10))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Primary Mobile number!');
+                }
+                else if((mob2 != '') && (mob2.length != 10))
+                {
+                    $('#studentOverlay').css('display', 'none');
+                    $('#overlay').css('display', 'none');
+                    toastr.error('Invaild Secondary Mobile number!');
+                }
+                else
+                {
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../includes/ajax.php',
+                        data: { 'sname': sname, 'fname': fname, 'mname': mname, 'dob': dob, 'course': course, 'eyear': eyear, 'enroll': enroll, 'roll': roll, 'email': email, 'mob1': mob1, 'mob2': mob2, 'add1': add1, 'add2': add2, 'add3': add3, 'request': 'addStudent' },
+                        success: function(res){
+                            if(res == 0)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Please enter Student name!', 'error');
+                            }
+                            else if(res == 1)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Student name cannot have more than 50 characters!', 'error');
+                            }
+                            else if(res == 2)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', "Please enter Father's name!", 'error');
+                            }
+                            else if(res == 3)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', "Father's name cannot have more than 50 characters!", 'error');
+                            }
+                            else if(res == 4)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', "Please enter Mother's name!", 'error');
+                            }
+                            else if(res == 5)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', "Mother's Name cannot have more than 50 characters!", 'error');
+                            }
+                            else if(res == 6)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Date of Birth!', 'error');
+                            }
+                            else if(res == 7)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Please select Course!', 'error');
+                            }
+                            else if(res == 8)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Course!', 'error');
+                            }
+                            else if(res == 9 || res == 10 || res == 11)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Enrollment Year!', 'error');
+                            }
+                            else if(res == 12)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'This Enrollment number already exist!', 'error');
+                            }
+                            else if(res == 13)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'This Roll number already exist!', 'error');
+                            }
+                            else if(res == 14)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Email must have atleast 5 characters!', 'error');
+                            }
+                            else if(res == 15)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Email must not have more than 50 characters!', 'error');
+                            }
+                            else if(res == 16)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Email!', 'error');
+                            }
+                            else if(res == 17)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Primary Mobile number!', 'error');
+                            }
+                            else if(res == 18)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Invalid Secondary Mobile number!', 'error');
+                            }
+                            else if(res == 19)
+                            {
+                                showcontent();
+                                clearu();
+                                $('#studentOverlay').css('display', 'none');
+                                Swal.fire('Success!', 'Student enrolled successfully!', 'success');
+                            }
+                            else if(res == 20)
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Something went wrong!', 'error');
+                            }
+                            else
+                            {
+                                $('#studentOverlay').css('display', 'none');
+                                $('#overlay').css('display', 'none');
+                                Swal.fire('Error!', 'Something went wrong!', 'error');
+                            }
+                        }
+                    })
+                }
+            }
             function showcontent()
             {
                 $.ajax({

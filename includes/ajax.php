@@ -558,6 +558,7 @@
             $cid = $_POST['cid'];
             $course = $_POST['course'];
             $cfee = $_POST['cfee'];
+            $cexam = $_POST['cexam'];
             $cp = $_POST['cp'];
             $cremark = $_POST['cremark'];
             if(getrows('course', json_encode(['course_id' => $cid]), '') == 0)
@@ -576,11 +577,11 @@
             {
                 echo 3;
             }
-            else if($cfee == '')
+            else if($cfee == '' || $cexam == '')
             {
                 echo 4;
             }
-            else if($cfee > 9999999)
+            else if($cfee > 9999999 || $cexam > 9999999)
             {
                 echo 5;
             }
@@ -593,7 +594,7 @@
                 $co = explode("_", $cp);
                 $ctype = $co[0];
                 $cperiod = $co[1];
-                if(update("course", "course_name='$course', course_fee='$cfee', course_type='$ctype', course_period='$cperiod', course_remark='$cremark'", json_encode(['course_id' => $cid]), ''))
+                if(update("course", "course_name='$course', course_tuition_fee='$cfee', course_exam_fee='$cexam', course_type='$ctype', course_period='$cperiod', course_remark='$cremark'", json_encode(['course_id' => $cid]), ''))
                 {
                     echo 7;
                 }
@@ -626,6 +627,7 @@
         {
             $cname = $_POST['cname'];
             $cfee = $_POST['cfee'];
+            $cexam = $_POST['cexam'];
             $cp = explode("_", $_POST['cp']);
             $type = $cp[0];
             $count = $cp[1];
@@ -642,11 +644,11 @@
             {
                 echo 2;
             }
-            else if($cfee == '')
+            else if($cfee == '' || $cexam == '')
             {
                 echo 3;
             }
-            else if($cfee > 9999999)
+            else if($cfee > 9999999 || $cexam > 9999999)
             {
                 echo 4;
             }
@@ -654,7 +656,7 @@
             {
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('course', json_encode(['course_name' => $cname, 'course_fee'=> $cfee, 'course_type' => $type, 'course_period' => $count, 'course_remark' => $cremark, 'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('course', json_encode(['course_name' => $cname, 'course_tuition_fee'=> $cfee, 'course_exam_fee'=> $cexam, 'course_type' => $type, 'course_period' => $count, 'course_remark' => $cremark, 'added_by' => $added_by, 'added_time' => $time])))
                 {
                     echo 5;
                 }
@@ -672,9 +674,9 @@
                     <tr>
                         <th>#</th>
                         <th>Course Name</th>
-                        <th>Course Fee</th>
+                        <th>Tuition Fees</th>
+                        <th>Exam Fees</th>
                         <th>Course Period</th>
-                        <th>Remark</th>
                         <th>Added By</th>
                         <th>Added Time</th>
                         <th>Actions</th>
@@ -691,7 +693,8 @@
                             <tr>
                                 <td><?php echo $i; ?></td>
                                 <td><?php echo $row['course_name']; ?></td>
-                                <td>₹ <?php echo $row['course_fee']; ?></td>
+                                <td>₹<?php echo $row['course_tuition_fee']; ?></td>
+                                <td>₹<?php echo $row['course_exam_fee']; ?></td>
                                 <td>
                                     <?php
                                         $period = $row['course_period'];
@@ -723,7 +726,6 @@
                                         }
                                     ?>
                                 </td>
-                                <td><?php echo $row['course_remark']; ?></td>
                                 <td>
                                     <?php
                                         $first = getvalue('fname', 'confidential', json_encode(['user_id' => $row['added_by']]), '');
@@ -734,7 +736,8 @@
                                 </td>
                                 <td><?php echo date("d M Y h:i:s A", $row['added_time']); ?></td>
                                 <td>
-                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_fee']; ?>', '<?php echo $cp; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
+                                    <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['course_name']; ?>', '<?php if($row['course_remark'] == ''){ echo 'No Remark'; }else{ echo $row['course_remark']; } ?>')"></i>
+                                    <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['course_id']; ?>', '<?php echo $row['course_name']; ?>', '<?php echo $row['course_tuition_fee']; ?>', '<?php echo $row['course_exam_fee']; ?>', '<?php echo $cp; ?>', '<?php echo $row['course_remark']; ?>')"></i> 
                                     <?php if(getrows('student', json_encode(['course' => $row['course_id']]), '') == 0){ ?><i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="del('<?php echo $row['course_id'] ?>')"></i><?php } ?>
                                 </td>
                             </tr>
@@ -744,6 +747,34 @@
                     ?>
                 </tbody>
             </table>
+            <div class="modal fade" id="course-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 id="modal-head" class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <table id="example2" class="table table-bordered table-striped">
+                                <tr>
+                                    <th>Remark</th>
+                                </tr>
+                                <tr>
+                                    <td id="modal-remark"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
             <script>
                 $(function () {
                     $("#example1").DataTable({
@@ -943,12 +974,13 @@
             else
             {
                 $cdob = strtotime($dob);
-                $course_fee = getvalue('course_fee', 'course', json_encode(['course_id' => $course]), '');
+                $course_tuition_fee = getvalue('course_tuition_fee', 'course', json_encode(['course_id' => $course]), '');
+                $course_exam_fee = getvalue('course_exam_fee', 'course', json_encode(['course_id' => $course]), '');
                 $course_type = getvalue('course_type', 'course', json_encode(['course_id' => $course]), '');
                 $course_period = getvalue('course_period', 'course', json_encode(['course_id' => $course]), '');
                 $time = time();
                 $added_by = $_SESSION['user_id'];
-                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_fee' => $course_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'student_email' => $email, 'student_mob1' => $mob1, 'student_mob2' => $mob2, 'student_add1' => $add1, 'student_add2' => $add2, 'student_add3' => $add3,'added_by' => $added_by, 'added_time' => $time])))
+                if(insert('student', json_encode(['student_name' => $sname, 'f_name'=> $f_name, 'm_name' => $m_name, 'dob' => $cdob, 'course' => $course, 'enroll_year' => $eyear, 'course_tuition_fee' => $course_tuition_fee, 'course_exam_fee' => $course_exam_fee, 'course_type' => $course_type, 'course_period' => $course_period, 'enroll' => $enroll, 'roll' => $roll, 'student_email' => $email, 'student_mob1' => $mob1, 'student_mob2' => $mob2, 'student_add1' => $add1, 'student_add2' => $add2, 'student_add3' => $add3,'added_by' => $added_by, 'added_time' => $time])))
                 {
                     echo 19;
                 }
@@ -1135,6 +1167,10 @@
             {
                 echo 1;
             }
+            else if($ihead == 200)
+            {
+                echo 2;
+            }
             else
             {
                 $ctype = getvalue('course_type', 'student', json_encode(['student_id' => $sid]), '');
@@ -1144,13 +1180,17 @@
                 {
                     if($sy == $i)
                     {
-                        echo 2;
+                        echo 3;
                     }
                 }
                 if($sy > $cperiod)
                 {
-                    echo 3;
+                    echo 4;
                 }
+                // else
+                // {
+                //     echo 5;
+                // }
             }
         }
         else if($_POST['request'] == 'updatePayment')
@@ -1338,7 +1378,7 @@
                                                 {
                                                     echo "Fee Concession";
                                                 }
-                                                else if($h == 108)
+                                                else if($h == 200)
                                                 {
                                                     echo "Other";
                                                 }
@@ -1417,7 +1457,7 @@
                                                     $remark = $row['remark'];
                                                 }
                                             ?>
-                                            <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $remark; ?>')"></i>
+                                            <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['dsc']; ?>', '<?php echo $remark; ?>')"></i>
                                             <i class="fas fa-edit text-primary" style="cursor: pointer;" onclick="setupdate('<?php echo $row['invoice_content_id']; ?>', '<?php echo $row['head']; ?>', '<?php echo $row['dsc']; ?>', '<?php echo $row['amount']; ?>', '<?php echo $row['tax']; ?>', '<?php echo $row['subt']; ?>', '<?php echo $row['remark']; ?>', '<?php if($row['dsc'] == 'Tuition Fee'){ echo 1; }else{ echo 0; } ?>')"></i> 
                                             <i class="fas fa-trash text-danger" style="cursor: pointer;" onclick="delut('<?php echo $row['invoice_content_id'] ?>')"></i>
                                         </td>
@@ -1447,7 +1487,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 id="modal-head" class="modal-title">Payment Remark</h4>
+                            <h4 id="modal-head" class="modal-title"></h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -1843,7 +1883,7 @@
                                                             $added_by = $first." ".$middle." ".$last;
                                                             $added_time = date("d M Y h:i:s A", $row['added_time']);
                                                         ?>
-                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i> 
+                                                        <i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $row['student_id']; ?>', '<?php echo $row['student_name']; ?>', '<?php echo $row['f_name']; ?>', '<?php echo $row['m_name']; ?>', '<?php echo date('d M Y', $row['dob']); ?>', '<?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?>', '<?php echo $row['enroll_year']; ?>', '<?php echo $row['enroll']; ?>', '<?php echo $row['roll']; ?>', '<?php echo $row['student_email']; ?>', '<?php echo $row['student_mob1']; ?>', '<?php echo $row['student_mob2']; ?>', '<?php echo $row['student_add1']; ?>', '<?php echo $row['student_add2']; ?>', '<?php echo $row['student_add3']; ?>', '<?php echo $added_by; ?>', '<?php echo $added_time; ?>')"></i>
                                                     </td>
                                                 </tr>
                                                 <?php
@@ -1965,6 +2005,8 @@
                         <th>Paid Tuition Fees</th>
                         <th>Total Exam Fees</th>
                         <th>Paid Exam Fees</th>
+                        <th>Total Fees Paid</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1976,20 +2018,34 @@
                         $sid = $row['student_id'];
                         $tuition = $row['course'];
                         $collected = 0;
-                        $result1 = getresult('*', 'invoice_content', json_encode(['student_id' => $sid, 'dsc' => 'Tuition Fee']), '', '', '', '');
+                        $exam_fees = 0;
+                        $total = 0;
+                        $result1 = getresult("*", "invoice_content", "", "student_id='$sid' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL", "", "", "");
                         while($row1 = mysqli_fetch_array($result1))
                         {
                             $collected += $row1['amount'];
+                        }
+                        $result2 = getresult("*", "invoice_content", "", "student_id='$sid' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL", "", "", "");
+                        while($row2 = mysqli_fetch_array($result2))
+                        {
+                            $exam_fees += $row2['amount'];
+                        }
+                        $result3 = getresult("*", "invoice_content", "", "student_id='$sid' AND invoice_id IS NOT NULL", "", "", "");
+                        while($row3 = mysqli_fetch_array($result3))
+                        {
+                            $total += $row3['amount'];
                         }
                         ?>
                         <tr>
                             <td><?php echo $i; ?></td>
                             <td><?php echo $row['student_name']; ?></td>
                             <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
-                            <td style="text-align: right;">₹<?php echo $row['course_fee']; ?></td>
-                            <td style="text-align: right;">₹<?php echo $collected; ?></td>
-                            <td></td>
-                            <td></td>
+                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $row['course_tuition_fee']); ?></td>
+                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $collected); ?></td>
+                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $row['course_exam_fee']); ?></td>
+                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $exam_fees); ?></td>
+                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $total); ?></td>
+                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $row['student_name']; ?>')"></i></td>
                         </tr>
                         <?php
                         $i++;
@@ -1997,6 +2053,25 @@
                     ?>
                 </tbody>
             </table>
+            <div class="modal fade" id="status-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div id="moverlay" style="display: none !important;" class="overlay d-flex justify-content-center align-items-center">
+                            <i class="fas fa-2x fa-sync fa-spin"></i>
+                        </div>
+                        <div class="modal-header">
+                            <h4 id="modal-head" class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="modal-content" class="modal-body"></div>
+                        <div class="modal-footer justify-content-between">
+                            <a id="modal-receipt" href="#" target="_blank"><button type="button" class="btn btn-primary">Payment Details</button></a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
                 </div>
                 <!-- /.modal-dialog -->
             </div>
@@ -2016,6 +2091,785 @@
                 });
             </script>
             <?php
+        }
+        else if($_POST['request'] == 'searchPStatus')
+        {
+            $course = $_POST['course'];
+            $period = $_POST['period'];
+            $eyear = $_POST['eyear'];
+            $ft = $_POST['ft'];
+            $ps = $_POST['ps'];
+            $str = '';
+            if($course != '')
+            {
+                $str .= "course='$course' AND ";
+            }
+            if($eyear != '')
+            {
+                $str .= "enroll_year='$eyear' AND ";
+            }
+            if($str != '')
+            {
+                $str = substr($str, 0, -5);
+            }
+            else
+            {
+                $str = 'student_id > 0';
+            }
+            ?>
+            <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Course</th>
+                        <th>Total Tuition Fees</th>
+                        <th>Paid Tuition Fees</th>
+                        <th>Total Exam Fees</th>
+                        <th>Paid Exam Fees</th>
+                        <th>Total Fees Paid</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                        $i = 1;
+                        $result = getresult('*', 'student', '', $str, '', '', '');
+                        while($row = mysqli_fetch_array($result))
+                        {
+                            $sid = $row['student_id'];
+                            $ttfee = $row['course_tuition_fee'];
+                            $tefee = $row['course_exam_fee'];
+                            $cp = $row['course_period'];
+                            $course = $row['course'];
+                            $sname = $row['student_name'];
+                            if($ttfee != 0)
+                            {
+                                $etfee = $ttfee/$cp;
+                            }
+                            else
+                            {
+                                $etfee = 0;
+                            }
+                            if($tefee != 0)
+                            {
+                                $eefee = $tefee/$cp;
+                            }
+                            else
+                            {
+                                $eefee = 0;
+                            }
+                            $tfeepaid = 0;
+                            $texampaid = 0;
+                            $tpaid = 0;
+                            $result1 = getresult("*", "invoice_content", "", "student_id='$sid' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL", "", "", "");
+                            while($row1 = mysqli_fetch_array($result1))
+                            {
+                                $tfeepaid += $row1['amount'];
+                            }
+                            $result2 = getresult("*", "invoice_content", "", "student_id='$sid' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL", "", "", "");
+                            while($row2 = mysqli_fetch_array($result2))
+                            {
+                                $texampaid += $row2['amount'];
+                            }
+                            $result3 = getresult("*", "invoice_content", "", "student_id='$sid' AND invoice_id IS NOT NULL", "", "", "");
+                            while($row3 = mysqli_fetch_array($result3))
+                            {
+                                $tpaid += $row3['amount'];
+                            }
+                            if($ps == '')
+                            {
+                                ?>
+                                <tr>
+                                    <td><?php echo $i; ?></td>
+                                    <td><?php echo $sname; ?></td>
+                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                </tr>
+                                <?php
+                                $i++;
+                            }
+                            else if($ps == 0)
+                            {
+                                if($period == '' && $ft == 0)
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        if($ttfee != 0)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $row['student_name']; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $row['course']]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                }
+                                else if($period == '' && $ft == 1)
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        if($tefee != 0)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                }
+                                else if($period != '' && $ft == '')
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND head='$period' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        if($ttfee != 0 && $tefee != 0)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                }
+                                else if($period != '' && $ft == 0)
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        if($ttfee != 0)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if($ttfee != 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $result4 = getresult("*", "invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL", "", "", "");
+                                            while($row4 = mysqli_fetch_array($result4))
+                                            {
+                                                $tuitionfee += $row4['amount'];
+                                            }
+                                            if($tuitionfee < $etfee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if($period != '' && $ft == 1)
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        if($tefee != 0)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if($ttfee != 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $result4 = getresult("*", "invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL", "", "", "");
+                                            while($row4 = mysqli_fetch_array($result4))
+                                            {
+                                                $tuitionfee += $row4['amount'];
+                                            }
+                                            if($tuitionfee < $eefee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if(getrows("invoice_content", "", "student_id='$sid' AND invoice_id IS NOT NULL") == 0)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                            }
+                            else if($ps == 1)
+                            {
+                                if($period == '' && $ft == 0)
+                                {
+                                    if($ttfee == $tfeepaid)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                else if($period == '' && $ft == 1)
+                                {
+                                    if($tefee == $texampaid)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                else if($period != '' && $ft == '')
+                                {
+                                    $result4 = getresult("*", "invoice_content", "", "student_id='$sid' AND head='$period' AND invoice_id IS NOT NULL", "", "", "");
+                                    if(mysqli_num_rows($result4) > 0)
+                                    {
+                                        if($ttfee != 0 && $tefee != 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $examfee = 0;
+                                            while($row = mysqli_fetch_array($result4))
+                                            {
+                                                if($row['dsc'] == 'Tuition Fee')
+                                                {
+                                                    $tuitionfee += $row['amount'];
+                                                }
+                                                else if($row['dsc'] == 'Exam Fee (Regular)')
+                                                {
+                                                    $examfee += $row['amount'];
+                                                }
+                                            }
+                                            if($etfee <= $tuitionfee && $eefee <= $examfee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                        else if($ttfee != 0 && $tefee == 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $examfee = 0;
+                                            while($row = mysqli_fetch_array($result4))
+                                            {
+                                                if($row['dsc'] == 'Tuition Fee')
+                                                {
+                                                    $tuitionfee += $row['amount'];
+                                                }
+                                            }
+                                            if($etfee <= $tuitionfee && $tefee <= $examfee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                        else if($ttfee == 0 && $tefee != 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $examfee = 0;
+                                            while($row = mysqli_fetch_array($result4))
+                                            {
+                                                if($row['dsc'] == 'Exam Fee (Regular)')
+                                                {
+                                                    $examfee += $row['amount'];
+                                                }
+                                            }
+                                            if($ttfee <= $tuitionfee && $eefee <= $examfee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                        else if($ttfee == 0 && $tefee == 0)
+                                        {
+                                            $tuitionfee = 0;
+                                            $examfee = 0;
+                                            if($ttfee <= $tuitionfee && $tefee <= $examfee)
+                                            {
+                                                ?>
+                                                <tr>
+                                                    <td><?php echo $i; ?></td>
+                                                    <td><?php echo $sname; ?></td>
+                                                    <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                    <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                    <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                                </tr>
+                                                <?php
+                                                $i++;
+                                            }
+                                        }
+                                    }
+                                    else if($ttfee == 0 && $tefee == 0)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                else if($period != '' && $ft == 0)
+                                {
+                                    $result4 = getresult("*", "invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL", "", "", "");
+                                    if(mysqli_num_rows($result4) > 0)
+                                    {
+                                        $tuitionfee = 0;
+                                        while($row4 = mysqli_fetch_array($result4))
+                                        {
+                                            $tuitionfee += $row4['amount'];
+                                        }
+                                        if($tuitionfee >= $etfee)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                    else if($ttfee == 0)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                else if($period != '' && $ft == 1)
+                                {
+                                    $result4 = getresult("*", "invoice_content", "", "student_id='$sid' AND head='$period' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL", "", "", "");
+                                    if(mysqli_num_rows($result4) > 0)
+                                    {
+                                        $examfee = 0;
+                                        while($row4 = mysqli_fetch_array($result4))
+                                        {
+                                            $examfee += $row4['amount'];
+                                        }
+                                        if($examfee >= $eefee)
+                                        {
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $sname; ?></td>
+                                                <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                                <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                                <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                            </tr>
+                                            <?php
+                                            $i++;
+                                        }
+                                    }
+                                    else if($tefee == 0)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                else
+                                {
+                                    if($ttfee <= $tfeepaid && $tefee <= $texampaid)
+                                    {
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $i; ?></td>
+                                            <td><?php echo $sname; ?></td>
+                                            <td><?php echo getvalue('course_name', 'course', json_encode(['course_id' => $course]), ''); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $ttfee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tfeepaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tefee); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $texampaid); ?></td>
+                                            <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tpaid); ?></td>
+                                            <td><i class="fas fa-eye" style="cursor: pointer;" onclick="showModal('<?php echo $sid; ?>', '<?php echo $sname; ?>')"></i></td>
+                                        </tr>
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                            }
+                        }
+                    ?>
+                </tbody>
+            </table>
+            <div class="modal fade" id="status-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div id="moverlay" style="display: none !important;" class="overlay d-flex justify-content-center align-items-center">
+                            <i class="fas fa-2x fa-sync fa-spin"></i>
+                        </div>
+                        <div class="modal-header">
+                            <h4 id="modal-head" class="modal-title"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="modal-content" class="modal-body"></div>
+                        <div class="modal-footer justify-content-between">
+                            <a id="modal-receipt" href="#" target="_blank"><button type="button" class="btn btn-primary">Payment Details</button></a>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+            <script>
+                $(function () {
+                    $("#example1").DataTable({
+                        "paging": false,
+                        "lengthChange": false,
+                        "searching": true,
+                        "ordering": false,
+                        "info": true,
+                        "autoWidth": true,
+                        "responsive": true,
+                        "buttons": ["pdf", "print"]
+                    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+                });
+            </script>
+            <?php
+        }
+        else if($_POST['request'] == 'statusModal')
+        {
+            $sid = $_POST['sid'];
+            $ttfee = getvalue('course_tuition_fee', 'student', json_encode(['student_id' => $sid]), '');
+            $tefee = getvalue('course_exam_fee', 'student', json_encode(['student_id' => $sid]), '');
+            $ctype = getvalue('course_type', 'student', json_encode(['student_id' => $sid]), '');
+            if($ctype == 0)
+            {
+                $ctname = 'Year';
+            }
+            else
+            {
+                $ctname = 'Semester';
+            }
+            $cp = getvalue('course_period', 'student', json_encode(['student_id' => $sid]), '');
+            $etfee = $ttfee/$cp;
+            $eefee = $tefee/$cp;
+            ?>
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>#</th>
+                    <th><?php echo $ctname; ?></th>
+                    <th>Tuition Fees</th>
+                    <th>Exam Fees</th>
+                </tr>
+                <?php
+                    for($i = 1; $i <= $cp; $i++)
+                    {
+                        ?>
+                        <tr>
+                            <th><?php echo $i; ?></th>
+                            <th><?php echo $ctname." ".$i; ?></th>
+                            <th>
+                                <?php
+                                    if($ttfee == 0)
+                                    {
+                                        ?>
+                                        <span class="badge bg-success">Paid</span>
+                                        <?php
+                                    }
+                                    else
+                                    {
+                                        $tuition = getrows("invoice_content", "", "student_id='$sid' AND head='$i' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL");
+                                        if($tuition == 0)
+                                        {
+                                            ?>
+                                            <span class="badge bg-danger">Due</span>
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            $feepaid = getvalue("amount", "invoice_content", "", "student_id='$sid' AND head='$i' AND dsc='Tuition Fee' AND invoice_id IS NOT NULL");
+                                            if($feepaid == $etfee)
+                                            {
+                                                ?>
+                                                <span class="badge bg-success">Paid</span>
+                                                <?php
+                                            }
+                                            else if($feepaid == 0)
+                                            {
+                                                ?>
+                                                <span class="badge bg-danger">Due</span>
+                                                <?php
+                                            }
+                                            else
+                                            {
+                                                ?>
+                                                <span class="badge bg-warning">Partially Paid</span>
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                ?>
+                            </th>
+                            <th>
+                                <?php
+                                    if($tefee == 0)
+                                    {
+                                        ?>
+                                        <span class="badge bg-success">Paid</span>
+                                        <?php
+                                    }
+                                    else
+                                    {
+                                        $exam = getrows("invoice_content", "", "student_id='$sid' AND head='$i' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL");
+                                        if($exam == 0)
+                                        {
+                                            ?>
+                                            <span class="badge bg-danger">Due</span>
+                                            <?php
+                                        }
+                                        else
+                                        {
+                                            $feepaid = getvalue("amount", "invoice_content", "", "student_id='$sid' AND head='$i' AND dsc='Exam Fee (Regular)' AND invoice_id IS NOT NULL");
+                                            if($feepaid == $eefee)
+                                            {
+                                                ?>
+                                                <span class="badge bg-success">Paid</span>
+                                                <?php
+                                            }
+                                            else if($feepaid == 0)
+                                            {
+                                                ?>
+                                                <span class="badge bg-danger">Due</span>
+                                                <?php
+                                            }
+                                            else
+                                            {
+                                                ?>
+                                                <span class="badge bg-warning">Partially Paid</span>
+                                                <?php
+                                            }
+                                        }
+                                    }
+                                ?>
+                            </th>
+                        </tr>
+                        <?php
+                    }
+                ?>
+            </table>
+            <?php
+        }
+        else if($_POST['request'] == 'statusGetCp')
+        {
+            $course = $_POST['course'];
+            $ctype = getvalue("course_type", "course", json_encode(['course_id' => $course]), "");
+            $cperiod = getvalue("course_period", "course", json_encode(['course_id' => $course]), "");
+            if($ctype == 0)
+            {
+                $system = "Year";
+            }
+            else
+            {
+                $system = "Semester";
+            }
+            ?>
+            <option value="">--All--</option>
+            <?php
+            for($i = 1; $i <= $cperiod; $i++)
+            {
+                ?>
+                <option value="<?php echo $i; ?>"><?php echo $system." ".$i; ?></option>
+                <?php
+            }
         }
     }
 ?>

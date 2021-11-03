@@ -16,7 +16,6 @@
             $sname = $row1['student_name'];
             $course = $row1['course'];
             $cname = getvalue('course_name', 'course', json_encode(['course_id' => $course]), '');
-            $cfee = $row1['course_fee'];
             $ctype = $row1['course_type'];
             $cperiod = $row1['course_period'];
             $eyear = $row1['enroll_year'];
@@ -125,7 +124,7 @@
                                                 <?php if($sadd1 != ''){ echo $sadd1."<br>"; } ?>
                                                 <?php if($sadd2 != ''){ echo $sadd2."<br>"; } ?>
                                                 <?php if($sadd3 != ''){ echo $sadd3."<br>"; } ?>
-                                                <?php if($smob1 != '' || $smob2 != ''){ echo "Contact No.: "; if($smob1 != '' && $smob2 == ''){ echo $smob1."<br>"; }else if($mob1 == '' && $mob2 != ''){ echo $smob2."<br>"; }else if($mob1 != '' && $mob != ''){ echo $mob1.", ".$mob2."<br>"; }} ?>
+                                                <?php if($smob1 != '' || $smob2 != ''){ echo "Contact No.: "; if($smob1 != '' && $smob2 == ''){ echo $smob1."<br>"; }else if($smob1 == '' && $smob2 != ''){ echo $smob2."<br>"; }else if($smob1 != '' && $smob2 != ''){ echo $smob1.", ".$smob2."<br>"; }} ?>
                                                 <?php if($semail != ''){ echo "Email: ".$semail; } ?>
                                             </address>
                                         </div>
@@ -205,7 +204,7 @@
                                                                             {
                                                                                 echo "Fee Concession";
                                                                             }
-                                                                            else if($h == 108)
+                                                                            else if($h == 200)
                                                                             {
                                                                                 echo "Other";
                                                                             }
@@ -286,12 +285,12 @@
 
                                     <div class="row">
                                         <!-- /.col -->
-                                        <div class="offset-md-8 col-md-4">
+                                        <div class="offset-md-9 col-md-3">
                                             <div class="table-responsive">
                                                 <table class="table">
                                                     <tr>
                                                         <th>Total Amount Paid:</th>
-                                                        <td>₹<?php echo sprintf('%.2f', $tot); ?></td>
+                                                        <td style="text-align: right;">₹<?php echo sprintf('%.2f', $tot); ?></td>
                                                     </tr>
                                                 </table>
                                             </div>
