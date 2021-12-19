@@ -2871,5 +2871,72 @@
                 <?php
             }
         }
+        else if($_POST['request'] == 'mailersw')
+        {
+            if($_POST['option'] != '')
+            {
+                $option = $_POST['option'];
+            }
+            else
+            {
+                $option = 0;
+            }
+            if(update("settings", "setting_value='$option'", json_encode(['setting_name' => 'mailer']), ""))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else if($_POST['request'] == 'mhost')
+        {
+            $mhost = $_POST['mhost'];
+            if(update("settings", "setting_value='$mhost'", json_encode(['setting_name' => 'PHPmailerhost']), ""))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else if($_POST['request'] == 'mport')
+        {
+            $mport = $_POST['mport'];
+            if(update("settings", "setting_value='$mport'", json_encode(['setting_name' => 'PHPmailerport']), ""))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else if($_POST['request'] == 'muser')
+        {
+            $muser = $_POST['muser'];
+            if(update("settings", "setting_value='$muser'", json_encode(['setting_name' => 'PHPmailerusername']), ""))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
+        else if($_POST['request'] == 'mpass')
+        {
+            $mpass = $_POST['mpass'];
+            if(update("settings", "setting_value='$mpass'", json_encode(['setting_name' => 'PHPmailerpassword']), ""))
+            {
+                echo 1;
+            }
+            else
+            {
+                echo 0;
+            }
+        }
     }
 ?>

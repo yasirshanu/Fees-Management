@@ -6,4 +6,5 @@
     include_once("sessioncheck.php");
     include_once("sitesettings.php");
     include_once("settings.php");
+    include_once("passresetcheck.php");
 ?>

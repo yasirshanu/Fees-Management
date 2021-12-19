@@ -134,63 +134,63 @@
                             }
                         ?>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="card card-outline card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Portal Settings</h3>
+                                        <h3 class="card-title">Basic Settings</h3>
                                     </div>
                                     <div class="card-body">
                                         <form class="form-horizontal" action="" method="post">
                                             <div class="row">
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-name">Institute Name: <span class="text-danger">*</span></label>
                                                         <input type="text" name="insti-name" id="insti-name" class="form-control" placeholder="Enter Institute Name" value="<?php echo $insti_name; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="site-title">Portal Title: <span class="text-danger">*</span></label>
                                                         <input type="text" name="site-title" id="site-title" class="form-control" placeholder="Enter Site Title" value="<?php echo $sitetitle; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="site-name">Portal Name: <span class="text-danger">*</span></label>
                                                         <input type="text" name="site-name" id="site-name" class="form-control" placeholder="Enter Site Name" value="<?php echo $sitename; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-add1">Institute Address Line 1:</label>
                                                         <input type="text" name="insti-add1" id="insti-add1" class="form-control" placeholder="Enter Institute Address Line 1" value="<?php echo $insti_add1; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-add2">Institute Address Line 2:</label>
                                                         <input type="text" name="insti-add2" id="insti-add2" class="form-control" placeholder="Enter Institute Address Line 2" value="<?php echo $insti_add2; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-add3">Institute Address Line 3:</label>
                                                         <input type="text" name="insti-add3" id="insti-add3" class="form-control" placeholder="Enter Institute Address Line 3" value="<?php echo $insti_add3; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-email">Institute Email: <span class="text-danger">*</span></label>
                                                         <input type="email" name="insti-email" id="insti-email" class="form-control" placeholder="Enter Institute Email" value="<?php echo $insti_email; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-contact1">Institute Primary Contact: <span class="text-danger">*</span></label>
                                                         <input type="text" name="insti-contact1" id="insti-contact1" class="form-control" placeholder="Enter Institute Primary Contact" value="<?php echo $insti_contact1; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label for="insti-contact2">Institute Secondary Contact:</label>
                                                         <input type="text" name="insti-contact2" id="insti-contact2" class="form-control" placeholder="Enter Institute Secondary Contact" value="<?php echo $insti_contact2; ?>">
@@ -206,6 +206,56 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="card card-primary card-outline">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Mailer Settings</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="mailersw" onchange="mailersw()" <?php if($mailer != 0)echo "checked"; ?> data-bootstrap-switch>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="form-group">
+                                                    <select id="maileroption" class="form-control <?php if($mailer == 0){ echo "first"; } ?>">
+                                                        <option value="0" disabled>--Select Mailer--</option>
+                                                        <option value="1" <?php if($mailer == 1)echo "selected"; ?>>Default Mailer</option>
+                                                        <option value="2" <?php if($mailer == 2)echo "selected"; ?>>PHPmailer</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="mhost">SMTP Mailer Host</label>
+                                                    <input type="text" id="mhost" class="form-control" value="<?php echo $PHPmailerhost; ?>" placeholder="Enter SMTP Mailer Host">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="mport">Port</label>
+                                                    <input type="text" id="mport" class="form-control" value="<?php echo $PHPmailerport; ?>" placeholder="Enter Port">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="muser">Username</label>
+                                                    <input type="text" id="muser" class="form-control" value="<?php echo $PHPmailerusername; ?>" placeholder="Enter Username">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="mpass">Password </label>&nbsp&nbsp<i class="fa fa-info-circle" data-toggle="tooltip" title="" style="cursor:pointer;" data-original-title="If you are using a Google account with 2 step verification as mailer, you need to go to Manage your Google Account -> Security -> App Passwords to generate a new password."></i>
+                                                    <input type="password" id="mpass" class="form-control" value="<?php echo $PHPmailerpassword; ?>" placeholder="Enter Password">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="mailerOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
@@ -217,5 +267,156 @@
         </div>
         <!-- ./wrapper -->
         <?php include_once("../../includes/scripts.php"); ?>
+        <!-- Bootstrap Switch -->
+        <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+        <script>
+            $(function () {
+                $("input[data-bootstrap-switch]").each(function(){
+                    $(this).bootstrapSwitch('state', $(this).prop('checked'));
+                })
+            })
+
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
+
+            document.getElementById("maileroption").addEventListener("change", maileroption);
+            document.getElementById("mhost").addEventListener("change", mhost);
+            document.getElementById("mport").addEventListener("change", mport);
+            document.getElementById("muser").addEventListener("change", muser);
+            document.getElementById("mpass").addEventListener("change", mpass);
+
+            function mhost(){
+                var mhost = $('#mhost').val();
+                $('#mailerOverlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'mhost': mhost, 'request': 'mhost' },
+                    success: function(res){
+                        if(res == 1){
+                            $('#mailerOverlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
+
+            function mport(){
+                var mport = $('#mport').val();
+                $('#mailerOverlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'mport': mport, 'request': 'mport' },
+                    success: function(res){
+                        if(res == 1){
+                            $('#mailerOverlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
+
+            function muser(){
+                var muser = $('#muser').val();
+                $('#mailerOverlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'muser': muser, 'request': 'muser' },
+                    success: function(res){
+                        if(res == 1){
+                            $('#mailerOverlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
+
+            function mpass(){
+                var mpass = $('#mpass').val();
+                $('#mailerOverlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'mpass': mpass, 'request': 'mpass' },
+                    success: function(res){
+                        if(res == 1){
+                            $('#mailerOverlay').css('display', 'none');
+                        }
+                    }
+                })
+            }
+
+            function mailersw(){
+                if($('#mailersw').prop('checked')){
+                    if($('#maileroption').hasClass('first')){
+                        $('#mailerOverlay').css('display', 'flex');
+                        $.ajax({
+                            type: 'POST',
+                            url: '../../includes/ajax.php',
+                            data: { 'option': '1', 'request': 'mailersw' },
+                            success: function(res){
+                                if(res == 1){
+                                    $('#maileroption').val('1');
+                                    $('#maileroption').removeAttr('disabled');
+                                    maileroption();
+                                    $('#mailerOverlay').css('display', 'none');
+                                }
+                            }
+                        })
+                    }
+                    else
+                    {
+                        $('#maileroption').removeAttr('disabled');
+                        maileroption();
+                    }
+                }
+                else{
+                    $('#mailerOverlay').css('display', 'flex');
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../includes/ajax.php',
+                        data: { 'option': '0', 'request': 'mailersw' },
+                        success: function(res){
+                            if(res == 1){
+                                $('#maileroption').val('0');
+                                $('#maileroption').attr('disabled', 'disabled');
+                                $('#maileroption').addClass('first');
+                                maileroption();
+                                $('#mailerOverlay').css('display', 'none');
+                            }
+                        }
+                    })
+                }
+            }
+
+            function maileroption(){
+                var option = $('#maileroption').val();
+                $('#mailerOverlay').css('display', 'flex');
+                $.ajax({
+                    type: 'POST',
+                    url: '../../includes/ajax.php',
+                    data: { 'option': option, 'request': 'mailersw' },
+                    success: function(res){
+                        if(res == 1){
+                            if(option == 2)
+                            {
+                                $('#mhost').removeAttr('disabled');
+                                $('#mport').removeAttr('disabled');
+                                $('#muser').removeAttr('disabled');
+                                $('#mpass').removeAttr('disabled');
+                            }
+                            else
+                            {
+                                $('#mhost').attr('disabled', 'disabled');
+                                $('#mport').attr('disabled', 'disabled');
+                                $('#muser').attr('disabled', 'disabled');
+                                $('#mpass').attr('disabled', 'disabled');
+                            }
+                        }
+                        $('#mailerOverlay').css('display', 'none');
+                    }
+                })
+            }
+        </script>
     </body>
 </html>

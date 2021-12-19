@@ -117,6 +117,18 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        <?php
+                            if($mailer != 0)
+                            {
+                                ?>
+                                <div class="row">
+                                    <div class="col-12">
+                                    <a href="../forgot-password">Forgot Password?</a>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                        ?>
                     </form>
                 </div>
               <!-- /.card-body -->
