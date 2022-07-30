@@ -56,39 +56,136 @@
                 <section class="content">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="card card-warning">
-                                    <!-- /.card-body -->
-                                    <div class="card-header">
-                                        <h3 id="userau" class="card-title">Add new User Type</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="form-group">
-                                            <label for="usertype">User Type <span class="text-danger">*</span></label>
-                                            <input type="text" id="usertype" class="form-control" placeholder="Enter User Type">
-                                            <input type="hidden" id="usertype_id" class="form-control" value="">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-warning">
+                                            <!-- /.card-body -->
+                                            <div class="card-header">
+                                                <h3 id="userau" class="card-title">Add new User Type</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="usertype">User Type <span class="text-danger">*</span></label>
+                                                    <input type="text" id="usertype" class="form-control" placeholder="Enter User Type">
+                                                    <input type="hidden" id="usertype_id" class="form-control" value="">
+                                                </div>
+                                                <div class="form-group">
+                                                    <button id="clear" class="btn btn-danger float-left">Clear</button>
+                                                    <button id="update" class="btn btn-primary float-right" style="display: none;">Update User Type</button>
+                                                    <button id="add" class="btn btn-primary float-right">Add User Type</button>
+                                                </div>
+                                            </div>
+                                            <!-- /.card-body -->
+                                            <div id="userOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
                                         </div>
-                                        <div class="form-group">
-                                            <button id="clear" class="btn btn-danger float-left">Clear</button>
-                                            <button id="update" class="btn btn-primary float-right" style="display: none;">Update User Type</button>
-                                            <button id="add" class="btn btn-primary float-right">Add User Type</button>
-                                        </div>
+                                        <!-- /.card -->
                                     </div>
-                                    <!-- /.card-body -->
-                                    <div id="userOverlay" class="overlay" style="display: none;"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
                                 </div>
-                                <!-- /.card -->
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">All User Type</h3>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h3 class="card-title">All User Type</h3>
+                                            </div>
+                                            <div id="cardbody" class="card-body" style="overflow: auto;"></div>
+                                            <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
+                                        </div>
                                     </div>
-                                    <div id="cardbody" class="card-body" style="overflow: auto;"></div>
-                                    <div id="overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>
                                 </div>
                             </div>
                             <!-- /.col -->
+                            <div class="col-md-6">
+                                <div class="card card-danger">
+                                    <div class="card-header">
+                                        <h3 class="card-title">New User Type Permissions</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table" id="table1">
+                                            <tr>
+                                                <th>Setting Name</th>
+                                                <th>View</th>
+                                                <th>Add</th>
+                                                <th>Update</th>
+                                                <th>Delete</th>
+                                                <th>All</th>
+                                            </tr>
+                                            <tr>
+                                                <td>Basic Settings</td>
+                                                <td><input id="basic" type="checkbox"></td>
+                                                <td><input id="basic" type="checkbox"></td>
+                                                <td><input id="basic" type="checkbox"></td>
+                                                <td><input id="basic" type="checkbox"></td>
+                                                <td><input id="basic" type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Mailer Settings</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>User Type</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>User</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Course</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Student</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fees Status</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Advanced Student Search</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox" disabled></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Invoice</td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                                <td><input type="checkbox"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.row -->
                     </div>
